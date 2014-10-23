@@ -15,3 +15,6 @@ Tasks:
 		- At the end of the init method we have a map structure
 			that maps the id of each stop to the set of
 			students assigned to that stop bus.
+			
+		- We determinate a new vector of stops that contains only
+			the stops that contains students.

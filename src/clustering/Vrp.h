@@ -50,7 +50,6 @@ public:
 	}
 };
 
-
 class VRP {
 private:
 	int nroStops;
@@ -96,12 +95,13 @@ private:
 	int** X;
 	std::vector<Stop> vStops;
 	std::vector<Student> vStudents;
+	std::vector<Stop> busStopAssigned;
 
 	//std::map<Student, int> queue;
 	std::vector<Student> queue;
 	std::vector<Student> queue2;
 	//boolean parameter for bus stop
-	bool isBusStopEmpty;
+	bool isCapacityModified;
 	std::vector<Stop> emptyBusStopsByDistance;
 	std::vector<Stop> emptyBusStopsByAssignment;
 	//std::vector<Stop> lessStudentsInStopBus;
@@ -122,6 +122,9 @@ public:
 	void setStops(std::vector<Stop> vStops);
 	std::vector<Student> getStudentds();
 	void setStudents(std::vector<Student> vStudents);
+	std::vector<Stop> getBusStops();
+	void setBusStops(std::vector<Stop> busses);
+
 	double getRadio();
 	void setRadio(double r);
 

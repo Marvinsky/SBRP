@@ -56,6 +56,14 @@ void VRP::setStudents(std::vector<Student> vStudent) {
 	this->vStudents = vStudent;
 }
 
+std::vector<Stop> VRP::getBusStops() {
+	return this->busStopAssigned;
+}
+
+void VRP::setBusStops(std::vector<Stop> busses) {
+	this->busStopAssigned = busses;
+}
+
 double VRP::getDistanceIJ(Stop s1, Stop s2) {
 	double dx, dy, dr;
 	dx = pow((s2.getX() - s1.getX()), 2);
@@ -341,6 +349,43 @@ void VRP::init() {
 		}
 		cout << "end  for this stop." << endl;
 	}
+	cout << "size stops = " << allStops.size() << endl;
+	std::vector<Stop> v_busStopsAssigned;
+	int u = 0;
+	for (std::vector<Stop>::size_type q = 0; q != allStops.size(); q++) {
+		Stop stop = allStops.at(q);
+		int capacityStop = stop.getCapacity();
+		std::map<int, std::vector<Student> >::iterator mapIter = map.find(
+				stop.getId());
+
+		if (mapIter != map.end()) {
+			std::vector<Student> studentsInBusStop = mapIter->second;
+			int capacityStopIter = studentsInBusStop.size();
+			if (capacityStop == capacityStopIter) {
+				cout << "Perfect assignment" << endl;
+			} else if (capacityStopIter < capacityStop) {
+				cout << "Less students that the allowed." << endl;
+			} else if (capacityStopIter > capacityStop) {
+				cout << "More students that the allowed." << endl;
+			}
+			//Update to the new capacity for each included stop.
+			stop.setCapacity(capacityStopIter);
+			v_busStopsAssigned.insert(v_busStopsAssigned.begin() + u, stop);
+			u++;
+		} else {
+			cout << "no encuentra a alguno" << endl;
+			cout << "(" << stop.getX() << ", " << stop.getY() << ")" << endl;
+		}
+	}
+	setBusStops(v_busStopsAssigned);
+	cout << "algo " << endl;
+	cout << "size = " << getBusStops().size() << endl;
+	for (std::vector<Stop>::size_type i = 0; i != getBusStops().size(); i++) {
+		Stop stop2 = getBusStops().at(i);
+		cout << "(" << stop2.getX() << ", " << stop2.getY() << ")" << endl;
+		cout << "the new Capacity is = " << stop2.getCapacity() << endl;
+	}
+
 }
 
 bool VRP::isInGlobalVector(Student s1) {
