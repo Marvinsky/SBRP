@@ -18,6 +18,21 @@ Stop::Stop(int x, int y, int capacity) {
 	this->capacity = capacity;
 }
 
+Stop::Stop(int id, int x, int y, int capacity) {
+	this->id = id;
+	this->x = x;
+	this->y = y;
+	this->capacity = capacity;
+}
+
+int Stop::getId() {
+	return this->id;
+}
+
+void Stop::setId(int id) {
+	this->id = id;
+}
+
 int Stop::getX() {
 	return x;
 }

@@ -25,6 +25,11 @@ struct Stud {
 	double distance;
 };
 
+struct StopBus {
+	Stop s;
+	double distance;
+};
+
 class CompareStud {
 public:
 	bool operator()(Stud& s1, Stud& s2) {
@@ -34,6 +39,19 @@ public:
 		return false;
 	}
 };
+
+class CompareStopBus {
+public:
+	bool operator()(StopBus& s1, StopBus& s2) {
+		if (s1.distance > s2.distance) {
+			return true;
+		}
+		return false;
+	}
+};
+
+//typedef std::vector<Student> studentSet;
+//typedef std::map<Stop, studentSet> stopSetMap;
 
 class VRP {
 private:
@@ -45,9 +63,9 @@ private:
 	 */
 	int nroStopsAssigned;
 	/*
-	 * Radio of the cluster
+	 * Radio of the mini-cluster
 	 */
-	int radio;
+	double radio;
 	/**
 	 * Number of students in stop
 	 */
@@ -83,7 +101,14 @@ private:
 
 	//std::map<Student, int> queue;
 	std::vector<Student> queue;
-	//Vectores para cada stop usando map
+	std::vector<Student> queue2;
+	//boolean parameter for bus stop
+	bool isBusStopEmpty;
+	std::vector<Stop> emptyBusStopsByDistance;
+	std::vector<Stop> emptyBusStopsByAssignment;
+	//std::vector<Stop> lessStudentsInStopBus;
+	std::vector<Student> studentNotAssigned;
+	std::map<int, std::vector<Student> > map;
 
 public:
 	int getNroStops();
@@ -99,6 +124,8 @@ public:
 	void setStops(std::vector<Stop> vStops);
 	std::vector<Student> getStudentds();
 	void setStudents(std::vector<Student> vStudents);
+	double getRadio();
+	void setRadio(double r);
 
 	double** getC();
 	void setC(double** C);
@@ -118,6 +145,9 @@ public:
 	bool isInGlobalVector(Student s1);
 	bool compare(Student s1, Student s2);
 	void init();
+
+	std::vector<Stop> getStopsOrderedByStudents(Student student);
+
 };
 
 #endif /* VRP_H_ */

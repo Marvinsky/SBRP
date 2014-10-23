@@ -10,10 +10,13 @@
 
 class Stop {
 private:
+	int id;
 	int x;
 	int y;
 	int capacity;
 public:
+	int getId();
+	void setId(int id);
 	int getX();
 	void setX(int x);
 	int getY();
@@ -22,6 +25,7 @@ public:
 	void setCapacity(int capacity);
 	Stop(int x, int y);
 	Stop(int x, int y, int capacity);
+	Stop(int id, int x, int y, int capacity);
 };
 
 #endif /* STOP_H_ */

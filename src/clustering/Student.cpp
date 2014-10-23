@@ -32,3 +32,11 @@ void Student::setCoord_y(int y) {
 	this->coord_y = y;
 }
 
+bool Student::isEqualTo(Student s) {
+	if ((s.getCoord_x() == this->coord_x)
+			&& (s.getCoord_y() == this->coord_y)) {
+		return true;
+	}
+	return false;
+}
+

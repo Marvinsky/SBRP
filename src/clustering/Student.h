@@ -19,6 +19,7 @@ public:
 	void setCoord_x(int x);
 	int getCoord_y();
 	void setCoord_y(int y);
+	bool isEqualTo(Student s);
 };
 
 #endif /* STUDENT_H_ */
