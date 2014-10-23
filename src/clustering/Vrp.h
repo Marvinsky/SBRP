@@ -50,8 +50,6 @@ public:
 	}
 };
 
-//typedef std::vector<Student> studentSet;
-//typedef std::map<Stop, studentSet> stopSetMap;
 
 class VRP {
 private:
