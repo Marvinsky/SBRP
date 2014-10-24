@@ -386,6 +386,37 @@ void VRP::init() {
 		cout << "the new Capacity is = " << stop2.getCapacity() << endl;
 	}
 
+	for (std::vector<Student>::size_type i = 0; i != allStudents.size(); i++) {
+		Student student = allStudents.at(i);
+		Stop stop = getStopByStudent(student);
+		cout << "The student located at place (" << student.getCoord_x() << ", "
+				<< student.getCoord_y() << ")" << endl;
+
+		cout << " goes to the bus stop in the position (" << stop.getX() << ", "
+				<< stop.getY() << ")" << endl;
+	}
+}
+
+Stop VRP::getStopByStudent(Student student) {
+	std::vector<Stop> allStops = getStops();
+	Stop result(0, 0);
+	for (std::vector<Stop>::size_type i = 0; i != allStops.size(); i++) {
+		Stop stop = allStops.at(i);
+		int id = stop.getId();
+		std::map<int, std::vector<Student> >::iterator mapIter2 = map.find(id);
+
+		if (mapIter2 != map.end()) {
+			std::vector<Student> studentList = mapIter2->second;
+			for (std::vector<Student>::size_type j = 0; j != studentList.size();
+					j++) {
+				Student studentIter = studentList.at(j);
+				if (student.isEqualTo(studentIter)) {
+					return stop;
+				}
+			}
+		}
+	}
+	return result;
 }
 
 bool VRP::isInGlobalVector(Student s1) {

@@ -100,8 +100,6 @@ private:
 	//std::map<Student, int> queue;
 	std::vector<Student> queue;
 	std::vector<Student> queue2;
-	//boolean parameter for bus stop
-	bool isCapacityModified;
 	std::vector<Stop> emptyBusStopsByDistance;
 	std::vector<Stop> emptyBusStopsByAssignment;
 	//std::vector<Stop> lessStudentsInStopBus;
@@ -148,6 +146,10 @@ public:
 	void init();
 
 	std::vector<Stop> getStopsOrderedByStudents(Student student);
+
+	//Determine for each student which stop he/she
+	//should move to.
+	Stop getStopByStudent(Student student);
 
 };
 
