@@ -10,6 +10,8 @@
 using namespace std;
 
 #include "clustering/Vrp.h"
+#include "cvrp/Cvrp.h"
+
 #include <vector>
 
 int main() {
@@ -20,5 +22,7 @@ int main() {
 	V.uploadFile(input);
 	V.init();
 
+	CVRP CV;
+	CV.init(V);
 	return 0;
 }

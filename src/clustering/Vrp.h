@@ -85,8 +85,6 @@ private:
 	 * stop
 	 */
 	double** Cls;
-	int* capacityOfEachV;
-	int** coorSchool; //coordinate of the depot.
 	/* variable Xij
 	 * i!=j binary variable equal to 1
 	 * if and only if arc(i, j) appears in the
@@ -106,7 +104,24 @@ private:
 	std::vector<Student> studentNotAssigned;
 	std::map<int, std::vector<Student> > map;
 
+	//For CVRP
+	int K;
+	int Kmin;
+	int Ck;
+	Stop coorSchool; //coordinate of the depot.
+
 public:
+
+	//For CVRP
+	int getK();
+	void setK(int K);
+	int getCk();
+	void setCk(int Ck);
+	int getKmin();
+	void setKmin(int Kmin);
+	Stop getCoorSchool();
+	void setCoorSchool(Stop stop);
+
 	int getNroStops();
 	void setNroStops(int stops);
 	int getNroStudents();

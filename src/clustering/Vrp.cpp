@@ -64,6 +64,39 @@ void VRP::setBusStops(std::vector<Stop> busses) {
 	this->busStopAssigned = busses;
 }
 
+//For CVRP
+int VRP::getK() {
+	return this->K;
+}
+
+void VRP::setK(int K) {
+	this->K = K;
+}
+
+int VRP::getCk() {
+	return this->Ck;
+}
+
+void VRP::setCk(int Ck) {
+	this->Ck = Ck;
+}
+
+int VRP::getKmin() {
+	return this->Kmin;
+}
+
+void VRP::setKmin(int Kmin) {
+	this->Kmin = Kmin;
+}
+
+Stop VRP::getCoorSchool() {
+	return this->coorSchool;
+}
+
+void VRP::setCoorSchool(Stop stop) {
+	this->coorSchool = stop;
+}
+
 double VRP::getDistanceIJ(Stop s1, Stop s2) {
 	double dx, dy, dr;
 	dx = pow((s2.getX() - s1.getX()), 2);
@@ -229,7 +262,7 @@ void VRP::init() {
 			 l = l + 1;
 			 } */else {
 				map.insert(
-						pair<int, std::vector<Student>>(initialStop.getId(),
+						pair<int, std::vector<Student> >(initialStop.getId(),
 								queue2));
 				cout << "Stop (" << initialStop.getX() << ", "
 						<< initialStop.getY() << ")" << endl;
@@ -377,6 +410,7 @@ void VRP::init() {
 			cout << "(" << stop.getX() << ", " << stop.getY() << ")" << endl;
 		}
 	}
+	//The bus stops final
 	setBusStops(v_busStopsAssigned);
 	cout << "algo " << endl;
 	cout << "size = " << getBusStops().size() << endl;
@@ -395,6 +429,9 @@ void VRP::init() {
 		cout << " goes to the bus stop in the position (" << stop.getX() << ", "
 				<< stop.getY() << ")" << endl;
 	}
+
+	//Fill the new vector of Stops with the school coordinates
+
 }
 
 Stop VRP::getStopByStudent(Student student) {
@@ -443,10 +480,27 @@ void VRP::uploadFile(char pathFile[]) {
 	char str[100];
 	int nro_stops;
 	int nro_students;
+	int nro_vehicles;
+	int capacity_vehicle;
+	int nro_vehicles_min;
+	int coord_depot_x;
+	int coord_depot_y;
+
 	file >> str;
 	file >> nro_stops;
 	file >> str;
 	file >> nro_students;
+	file >> str;
+	file >> nro_vehicles;
+	file >> str;
+	file >> nro_vehicles_min;
+	file >> str;
+	file >> capacity_vehicle;
+	file >> str;
+	file >> str;
+	file >> str;
+	file >> coord_depot_x;
+	file >> coord_depot_y;
 
 	file >> str;
 	file >> str;
@@ -456,7 +510,11 @@ void VRP::uploadFile(char pathFile[]) {
 
 	setNroStops(nro_stops);
 	setNroStudents(nro_students);
-
+	setK(nro_vehicles);
+	setKmin(nro_vehicles_min);
+	setCk(capacity_vehicle);
+	Stop coord_school(coord_depot_x, coord_depot_y);
+	setCoorSchool(coord_school);
 	cout.setf(ios::fixed | ios::showpoint);
 	cout.precision(1);
 

@@ -7,9 +7,16 @@
 
 #include "Stop.h"
 
+Stop::Stop() {
+	//TODO
+}
+
 Stop::Stop(int x, int y) {
+	//depot
+	this->id = 0;
 	this->x = x;
 	this->y = y;
+	this->capacity = 0;
 }
 
 Stop::Stop(int x, int y, int capacity) {

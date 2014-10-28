@@ -23,6 +23,7 @@ public:
 	void setY(int y);
 	int getCapacity();
 	void setCapacity(int capacity);
+	Stop();
 	Stop(int x, int y);
 	Stop(int x, int y, int capacity);
 	Stop(int id, int x, int y, int capacity);
