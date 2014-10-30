@@ -18,9 +18,10 @@ int main() {
 
 	VRP V;
 	char input[] =
+	//		"C:\\Users\\Marvin\\Desktop\\Metaheuristica\\seminario3\\instancias\\002.vrp";
 			"C:\\Users\\Marvin\\Desktop\\Metaheuristica\\seminario3\\instancias\\ex4_n6.pmv";
 	V.uploadFile(input);
-	V.init();
+	V.init2();
 
 	CVRP CV;
 	CV.init(V);

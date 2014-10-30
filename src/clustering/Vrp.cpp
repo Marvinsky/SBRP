@@ -98,7 +98,7 @@ void VRP::setCoorSchool(Stop stop) {
 }
 
 double VRP::getDistanceIJ(Stop s1, Stop s2) {
-	double dx, dy, dr;
+	double dx = 0.0, dy = 0.0, dr = 0.0;
 	dx = pow((s2.getX() - s1.getX()), 2);
 	dy = pow((s2.getY() - s1.getY()), 2);
 
@@ -185,10 +185,11 @@ std::vector<Student> VRP::getStudentsByStop(Stop stop) {
 
 	double distance = 0;
 	int p = 0;
+	double radio = getRadio();
 	for (std::vector<Student>::size_type i = 0; i != allStudents.size(); i++) {
 		Student student = allStudents.at(i);
 		distance = getDistanceLS(student, stop);
-		if (distance <= 6) {
+		if (distance <= radio) {
 			p++;
 			Stud stud = { student, distance };
 			pq.push(stud);
@@ -211,11 +212,11 @@ std::vector<Stop> VRP::getStopsOrderedByStudents(Student student) {
 	std::vector<Stop> result;
 	priority_queue<StopBus, vector<StopBus>, CompareStopBus> pq2;
 	double distance = 0;
-
+	double radio = getRadio();
 	for (std::vector<Stop>::size_type i = 0; i != allStops.size(); i++) {
 		Stop stop = allStops.at(i);
 		distance = getDistanceLS(student, stop);
-		if (distance <= 6) {
+		if (distance <= radio) {
 			StopBus stopBus = { stop, distance };
 			pq2.push(stopBus);
 		}
@@ -228,6 +229,104 @@ std::vector<Stop> VRP::getStopsOrderedByStudents(Student student) {
 		k++;
 	}
 	return result;
+}
+
+void VRP::init2() {
+
+	std::vector<Stop> allStops = getStops();
+	int m = 0;
+	int g = 0;
+	int l = 0;
+	for (std::vector<Stop>::size_type p = 0; p != allStops.size(); p++) {
+		Stop initialStop = allStops.at(p);
+		std::vector<Student> students = getStudentsByStop(initialStop);
+
+		if (!students.empty()) {
+			//int capacity = initialStop.getCapacity();
+			int k = 0;
+			for (std::vector<Student>::size_type i = 0; i != students.size();
+					i++) {
+				if (!isInGlobalVector(students.at(i))) {
+					//Add the students into each vector stop
+					queue.insert(queue.begin() + k, students.at(i));
+					queue2.insert(queue2.begin() + k, students.at(i));
+					k++;
+				}
+			}
+			//int queue2Capacity = queue2.size();
+			if (queue2.empty()) {
+				emptyBusStopsByAssignment.insert(
+						emptyBusStopsByAssignment.begin() + g, initialStop);
+				g = g + 1;
+			} /*else if (queue2Capacity < capacity) {
+			 lessStudentsInStopBus.insert(lessStudentsInStopBus.begin() + l,
+			 initialStop);
+			 l = l + 1;
+			 } */else {
+				map.insert(
+						pair<int, std::vector<Student> >(initialStop.getId(),
+								queue2));
+				initialStop.setCapacity(queue2.size());
+				busAssigned.insert(busAssigned.begin() + l, initialStop);
+				cout << "Stop (" << initialStop.getX() << ", "
+						<< initialStop.getY() << ")" << endl;
+				for (std::map<Student, int>::size_type i = 0;
+						i != queue2.size(); i++) {
+					Student s = queue2.at(i);
+					cout << "(" << s.getCoord_x() << ", " << s.getCoord_y()
+							<< ")" << endl;
+				}
+				l = l + 1;
+				cout << "=======================" << endl;
+				queue2.clear();
+			}
+		} else {
+			emptyBusStopsByDistance.insert(emptyBusStopsByDistance.begin() + m,
+					initialStop);
+			m++;
+		}
+	}
+
+	std::vector<Student> allStudents = getStudentds();
+	int r = 0;
+	int o = 0;
+	for (std::vector<int>::size_type i = 0; i != allStudents.size(); i++) {
+		Student student = allStudents.at(i);
+		bool isInsertedInTheQueue = false;
+		for (std::vector<int>::size_type j = 0; j != queue.size(); j++) {
+			Student student2 = queue.at(j);
+			if (student.isEqualTo(student2)) {
+				isInsertedInTheQueue = true;
+			}
+		}
+		if (!isInsertedInTheQueue) {
+			studentNotAssigned.insert(studentNotAssigned.begin() + r, student);
+			r++;
+		} else {
+			studentAssigned.insert(studentAssigned.begin() + o, student);
+		}
+	}
+	cout << "========================================" << endl;
+	cout << "List of students that are not assigned to queue." << endl;
+	for (std::vector<Student>::size_type i = 0; i != studentNotAssigned.size();
+			i++) {
+		Student s = studentNotAssigned.at(i);
+		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
+	}
+
+	cout << "List of students that are not assigned to queue." << endl;
+	for (std::vector<Student>::size_type i = 0; i != studentAssigned.size();
+			i++) {
+		Student s = studentAssigned.at(i);
+		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
+	}
+	setBussAssigned(busAssigned);
+	cout << "List of Stops that are used.." << endl;
+	for (std::vector<Stop>::size_type i = 0; i != busAssigned.size(); i++) {
+		Stop s = busAssigned.at(i);
+		cout << "(" << s.getX() << ", " << s.getY() << ")" << endl;
+	}
+
 }
 
 void VRP::init() {
@@ -467,6 +566,14 @@ bool VRP::isInGlobalVector(Student s1) {
 	return false;
 }
 
+std::vector<Stop> VRP::getBusAssigned() {
+	return this->busAssigned;
+}
+
+void VRP::setBussAssigned(std::vector<Stop> assignedStops) {
+	this->busAssigned = assignedStops;
+}
+
 bool VRP::compare(Student s1, Student s2) {
 	if ((s1.getCoord_x() == s2.getCoord_x())
 			&& (s1.getCoord_y() == s2.getCoord_y())) {
@@ -476,6 +583,11 @@ bool VRP::compare(Student s1, Student s2) {
 }
 
 void VRP::uploadFile(char pathFile[]) {
+	std::cout.imbue(
+			std::locale(std::cout.getloc(), new punct_facet1<char, ','>));
+	cout.setf(ios::fixed | ios::showpoint);
+	cout.precision(2);
+
 	std::fstream file(pathFile);
 	char str[100];
 	int nro_stops;
@@ -485,6 +597,7 @@ void VRP::uploadFile(char pathFile[]) {
 	int nro_vehicles_min;
 	int coord_depot_x;
 	int coord_depot_y;
+	double radio;
 
 	file >> str;
 	file >> nro_stops;
@@ -496,6 +609,8 @@ void VRP::uploadFile(char pathFile[]) {
 	file >> nro_vehicles_min;
 	file >> str;
 	file >> capacity_vehicle;
+	file >> str;
+	file >> radio;
 	file >> str;
 	file >> str;
 	file >> str;
@@ -513,20 +628,19 @@ void VRP::uploadFile(char pathFile[]) {
 	setK(nro_vehicles);
 	setKmin(nro_vehicles_min);
 	setCk(capacity_vehicle);
+	setRadio(radio);
 	Stop coord_school(coord_depot_x, coord_depot_y);
 	setCoorSchool(coord_school);
-	cout.setf(ios::fixed | ios::showpoint);
-	cout.precision(1);
 
 //#############################################
 	int** coord_Stops = new int*[nroStops];
 	int** X_s = new int*[nro_stops];
-	double** C_s = new double*[nroStops];
+	C = new double*[nroStops];
 
 //Initialize Stops
 	for (int i = 0; i < nroStops; i++) {
 		coord_Stops[i] = new int[4];
-		C_s[i] = new double[nroStops];
+		C[i] = new double[nroStops];
 		X_s[i] = new int[1];
 	}
 
@@ -547,11 +661,21 @@ void VRP::uploadFile(char pathFile[]) {
 
 	for (int i = 0; i < nroStops; i++) {
 		for (int j = 0; j < nroStops; j++) {
-			C_s[i][j] = getDistanceIJ(v_stops.at(i), v_stops.at(j));
+			double distance = getDistanceIJ(v_stops.at(i), v_stops.at(j));
+			cout << distance << " ";
+			C[i][j] = distance;
 		}
+		cout << "\n";
+	}
+	cout << "Imprimir costos from j to j." << endl;
+	for (int i = 0; i < nroStops; i++) {
+		for (int j = 0; j < nroStops; j++) {
+			cout << C[i][j] << " ";
+		}
+		cout << "\n";
 	}
 
-	setC(C_s);
+	//setC(C_s);
 
 //###########################################
 //Initialize Students
@@ -565,9 +689,9 @@ void VRP::uploadFile(char pathFile[]) {
 		coord_Students[i] = new int[3];
 	}
 
-	double** C_ls = new double*[nroStudents];
+	Cls = new double*[nroStudents];
 	for (int i = 0; i < nroStudents; i++) {
-		C_ls[i] = new double[6];
+		Cls[i] = new double[nroStops];
 	}
 
 	for (int i = 0; i < nroStudents; i++) {
@@ -583,13 +707,12 @@ void VRP::uploadFile(char pathFile[]) {
 	}
 
 	setStudents(v_students);
-	cout << "size of students = " << v_students.size() << endl;
 
 	for (int i = 0; i < nroStudents; i++) {
 		for (int j = 0; j < nroStops; j++) {
-			C_ls[i][j] = getDistanceLS(v_students.at(i), v_stops.at(j));
+			Cls[i][j] = getDistanceLS(v_students.at(i), v_stops.at(j));
 		}
 	}
 
-	setCLS(C_ls);
+	//setCLS(C_ls);
 }

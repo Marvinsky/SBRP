@@ -11,9 +11,19 @@
 #include <vector>
 #include "Customer.h"
 #include "../clustering/Vrp.h"
+#include "Saving.h"
 
+#include <locale>
 #include <iostream>
 using namespace std;
+
+template<class charT, charT sep>
+class punct_facet: public std::numpunct<charT> {
+protected:
+	charT do_decimal_point() const {
+		return sep;
+	}
+};
 
 class CVRP {
 private:
@@ -29,6 +39,10 @@ private:
 	std::vector<int> p;
 	VRP vrp;
 
+	//Parameters to determinate the objective function
+	double** d;
+	bool** x;
+	double** s;
 public:
 	void init(VRP vrp);
 	int getNroCustomers();
@@ -53,6 +67,16 @@ public:
 	void setVRP(VRP vrp);
 
 	CVRP getVRP(VRP vrp);
+	//Operations to calculate the
+	double** getD();
+	void setD(double ** cop);
+	bool** getX();
+	void setX(bool** X);
+
+	//Formulate
+	double getFO();
+	double getDistanceIJ(Customer c1, Customer c2);
+
 };
 
 #endif /* CVRP_H_ */

@@ -17,6 +17,15 @@
 #include <iostream>
 #include <queue>
 #include <iomanip>
+#include <locale>
+
+template<class charT, charT sep>
+class punct_facet1: public std::numpunct<charT> {
+protected:
+	charT do_decimal_point() const {
+		return sep;
+	}
+};
 
 struct Stud {
 	//int x;
@@ -93,6 +102,8 @@ private:
 	int** X;
 	std::vector<Stop> vStops;
 	std::vector<Student> vStudents;
+
+	//For init()
 	std::vector<Stop> busStopAssigned;
 
 	//std::map<Student, int> queue;
@@ -100,8 +111,10 @@ private:
 	std::vector<Student> queue2;
 	std::vector<Stop> emptyBusStopsByDistance;
 	std::vector<Stop> emptyBusStopsByAssignment;
-	//std::vector<Stop> lessStudentsInStopBus;
+	//For init2()
+	std::vector<Stop> busAssigned;
 	std::vector<Student> studentNotAssigned;
+	std::vector<Student> studentAssigned;
 	std::map<int, std::vector<Student> > map;
 
 	//For CVRP
@@ -159,12 +172,16 @@ public:
 	bool isInGlobalVector(Student s1);
 	bool compare(Student s1, Student s2);
 	void init();
+	void init2();
 
 	std::vector<Stop> getStopsOrderedByStudents(Student student);
 
 	//Determine for each student which stop he/she
 	//should move to.
 	Stop getStopByStudent(Student student);
+	//Bus Assigned in the init2
+	std::vector<Stop> getBusAssigned();
+	void setBussAssigned(std::vector<Stop> assigned);
 
 };
 
