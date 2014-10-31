@@ -15,6 +15,8 @@
 
 #include <locale>
 #include <iostream>
+#include <map>
+
 using namespace std;
 
 template<class charT, charT sep>
@@ -29,6 +31,7 @@ class CVRP {
 private:
 	int nroCustomers;
 	std::vector<Customer> allCustomers;
+	std::vector<Customer> allCustNoDepot;
 	//A set of K identical vehicles, each with capacity C
 	int K;
 	int C;
@@ -38,6 +41,7 @@ private:
 	//Demanda de cada Customer
 	std::vector<int> p;
 	VRP vrp;
+	std::map<int, std::vector<Customer> > map;
 
 	//Parameters to determinate the objective function
 	double** d;
@@ -50,6 +54,9 @@ public:
 
 	std::vector<Customer> getAllCustomers();
 	void setAllCustomers(std::vector<Customer> allCustomers);
+
+	std::vector<Customer> getAllCustNoDepot();
+	void setAllCustNoDepot(std::vector<Customer> allCustNoDepot);
 
 	int getK();
 	void setK(int K);
@@ -76,7 +83,13 @@ public:
 	//Formulate
 	double getFO();
 	double getDistanceIJ(Customer c1, Customer c2);
-
+	bool compareCustomers(Customer c1, Customer c2);
+	bool validarPrimeraCondicion(Customer depot, Customer c1);
+	bool validarSegundaCondicion(Customer c2, Customer depot);
+	/*std::vector<std::vector<Customer> > modify(
+	 std::vector<std::vector<Customer> > vCustomers, Customer c1,
+	 Customer c2, int route1, int route2);
+	 */
 };
 
 #endif /* CVRP_H_ */

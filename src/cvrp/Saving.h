@@ -8,20 +8,21 @@
 #ifndef SAVING_H_
 #define SAVING_H_
 
+#include "Customer.h"
 
 class Saving {
 private:
-	int x;
-	int y;
+	Customer c1;
+	Customer c2;
 	double peso;
 
 public:
 	Saving();
-	Saving(int x, int y, double peso);
-	int getSavingX();
-	void setSavingX(int x);
-	int getSavingY();
-	void setSavingY(int y);
+	Saving(Customer c1, Customer c2, double peso);
+	Customer getSavingC1();
+	void setSavingC1(Customer c1);
+	Customer getSavingC2();
+	void setSavingC2(Customer c2);
 	double getSavingPeso();
 	void setSavingPeso(double peso);
 

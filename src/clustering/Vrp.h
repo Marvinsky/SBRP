@@ -63,23 +63,11 @@ class VRP {
 private:
 	int nroStops;
 	int nroStudents;
-	/*
-	 * Number the stops assigned to a
-	 * bus
-	 */
-	int nroStopsAssigned;
+
 	/*
 	 * Radio of the mini-cluster
 	 */
 	double radio;
-	/**
-	 * Number of students in stop
-	 */
-	int nroStudentsByStop;
-	/*
-	 * Number of Students by bus
-	 */
-	int nroStudentsByBus;
 	/**
 	 * coordinates for each stop
 	 */

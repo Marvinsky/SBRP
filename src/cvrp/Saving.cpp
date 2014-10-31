@@ -11,26 +11,26 @@ Saving::Saving() {
 	//TODO
 }
 
-Saving::Saving(int x, int y, double peso) {
-	this->x = x;
-	this->y = y;
+Saving::Saving(Customer c1, Customer c2, double peso) {
+	this->c1 = c1;
+	this->c2 = c2;
 	this->peso = peso;
 }
 
-int Saving::getSavingX() {
-	return this->x;
+Customer Saving::getSavingC1() {
+	return this->c1;
 }
 
-void Saving::setSavingX(int x) {
-	this->x = x;
+void Saving::setSavingC1(Customer c1) {
+	this->c1 = c1;
 }
 
-int Saving::getSavingY() {
-	return this->y;
+Customer Saving::getSavingC2() {
+	return this->c2;
 }
 
-void Saving::setSavingY(int y) {
-	this->y = y;
+void Saving::setSavingC2(Customer c2) {
+	this->c2 = c2;
 }
 
 double Saving::getSavingPeso() {
