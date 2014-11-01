@@ -101,6 +101,8 @@ public:
 	void setD(double ** cop);
 	bool** getX();
 	void setX(bool** X);
+	double** getS();
+	void setS(double** s);
 
 	//Formulate
 	double getFO();
@@ -116,6 +118,8 @@ public:
 	bool isInFinalRoute(std::vector<Customer> customers, Customer customer);
 	std::vector<Customer> expand(std::vector<Customer> allCustomers,
 			Customer customer);
+	void savingAlgorithm();
+
 };
 
 #endif /* CVRP_H_ */
