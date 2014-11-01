@@ -37,6 +37,14 @@ void CVRP::setAllCustNoDepot(std::vector<Customer> allCustNoDepot) {
 	this->allCustNoDepot = allCustNoDepot;
 }
 
+std::vector<std::vector<Customer> > CVRP::getAllRoutes() {
+	return this->allRoutes;
+}
+
+void CVRP::setAllRoutes(std::vector<std::vector<Customer> > allRoutes) {
+	this->allRoutes = allRoutes;
+}
+
 int CVRP::getK() {
 	return this->K;
 }
@@ -101,7 +109,7 @@ void CVRP::setX(bool** x) {
 	this->x = x;
 }
 
-void CVRP::init2(VRP V) {
+void CVRP::greedy(VRP V) {
 	cout.setf(ios::fixed | ios::showpoint);
 	cout.precision(2);
 	std::cout.imbue(
@@ -258,9 +266,11 @@ void CVRP::init2(VRP V) {
 		route.push_back(getDepot());
 		addRoutes.push_back(route);
 	}
+	setAllRoutes(addRoutes);
 	cout << "Routes generated greedy." << endl;
 	for (size_t i = 0; i < addRoutes.size(); i++) {
 		std::vector<Customer> route = addRoutes.at(i);
+		cout << "----------------------------------" << endl;
 		for (size_t j = 0; j < route.size(); j++) {
 			Customer c = route.at(j);
 			cout << c.getId() << ": (" << c.getX() << ", " << c.getY() << ")"
@@ -752,30 +762,6 @@ void CVRP::init(VRP V) {
 		cout << "\n";
 	}
 
-}
-
-/*
- std::vector<std::vector<Customer> > CVRP::modify(
- std::vector<std::vector<Customer> > vCustomers, Customer c1,
- Customer c2, int r1, int r2) {
-
- std::vector<Customer> route1 = vCustomers.at(r1);
- std::vector<Customer> route2 = vCustomers.at(r2);
- route1.insert(route1.end(), route2.begin(), route2.end());
-
- for (size_t i = 0; i < route1.size(); i++) {
- Customer customer = route1.at(i);
- cout << "(" << customer.getX() << ", " << customer.getY() << ")"
- << endl;
- }
- }
- */
-bool CVRP::validarPrimeraCondicion(Customer depot, Customer c1) {
-	return false;
-}
-
-bool CVRP::validarSegundaCondicion(Customer c1, Customer depot) {
-	return false;
 }
 
 double CVRP::getFO() {

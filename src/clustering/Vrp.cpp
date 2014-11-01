@@ -231,7 +231,7 @@ std::vector<Stop> VRP::getStopsOrderedByStudents(Student student) {
 	return result;
 }
 
-void VRP::init2() {
+void VRP::greedy() {
 
 	std::vector<Stop> allStops = getStops();
 	int m = 0;
@@ -258,11 +258,7 @@ void VRP::init2() {
 				emptyBusStopsByAssignment.insert(
 						emptyBusStopsByAssignment.begin() + g, initialStop);
 				g = g + 1;
-			} /*else if (queue2Capacity < capacity) {
-			 lessStudentsInStopBus.insert(lessStudentsInStopBus.begin() + l,
-			 initialStop);
-			 l = l + 1;
-			 } */else {
+			} else {
 				map.insert(
 						pair<int, std::vector<Student> >(initialStop.getId(),
 								queue2));
@@ -355,11 +351,7 @@ void VRP::init() {
 				emptyBusStopsByAssignment.insert(
 						emptyBusStopsByAssignment.begin() + g, initialStop);
 				g = g + 1;
-			} /*else if (queue2Capacity < capacity) {
-			 lessStudentsInStopBus.insert(lessStudentsInStopBus.begin() + l,
-			 initialStop);
-			 l = l + 1;
-			 } */else {
+			} else {
 				map.insert(
 						pair<int, std::vector<Student> >(initialStop.getId(),
 								queue2));

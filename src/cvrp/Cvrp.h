@@ -49,6 +49,7 @@ private:
 	int nroCustomers;
 	std::vector<Customer> allCustomers;
 	std::vector<Customer> allCustNoDepot;
+	std::vector<std::vector<Customer> > allRoutes;
 	//A set of K identical vehicles, each with capacity C
 	int K;
 	int C;
@@ -64,10 +65,9 @@ private:
 	double** d;
 	bool** x;
 	double** s;
-	std::vector<Customer> allSucc;
 public:
 	void init(VRP vrp);
-	void init2(VRP vrp);
+	void greedy(VRP vrp);
 	int getNroCustomers();
 	void setNroCustomers(int customersIncludingDepot);
 
@@ -76,6 +76,9 @@ public:
 
 	std::vector<Customer> getAllCustNoDepot();
 	void setAllCustNoDepot(std::vector<Customer> allCustNoDepot);
+
+	std::vector<std::vector<Customer> > getAllRoutes();
+	void setAllRoutes(std::vector<std::vector<Customer> > allRoutes);
 
 	int getK();
 	void setK(int K);
@@ -103,12 +106,6 @@ public:
 	double getFO();
 	double getDistanceIJ(Customer c1, Customer c2);
 	bool compareCustomers(Customer c1, Customer c2);
-	bool validarPrimeraCondicion(Customer depot, Customer c1);
-	bool validarSegundaCondicion(Customer c2, Customer depot);
-	/*std::vector<std::vector<Customer> > modify(
-	 std::vector<std::vector<Customer> > vCustomers, Customer c1,
-	 Customer c2, int route1, int route2);
-	 */
 
 	//New Implementation
 	Customer getCustomerLessDemand(std::vector<Customer> customers);

@@ -160,7 +160,7 @@ public:
 	bool isInGlobalVector(Student s1);
 	bool compare(Student s1, Student s2);
 	void init();
-	void init2();
+	void greedy();
 
 	std::vector<Stop> getStopsOrderedByStudents(Student student);
 
