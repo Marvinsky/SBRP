@@ -10,10 +10,13 @@
 
 class Customer {
 private:
+	int id;
 	int x;
 	int y;
 	int demand;
 public:
+	int getId();
+	void setId(int id);
 	int getX();
 	void setX(int x);
 	int getY();
@@ -22,6 +25,7 @@ public:
 	void setDemand(int demand);
 	Customer();
 	Customer(int x, int y, int demand);
+	Customer(int id, int x, int y, int demand);
 };
 
 #endif /* CUSTOMER_H_ */

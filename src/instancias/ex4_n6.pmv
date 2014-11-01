@@ -1,0 +1,33 @@
+NROSTOPS 6
+NROSTUDENTS 16
+NROVEHICLES  3
+NROVEHICLES_MIN 4
+CAPACITY_VEHICLE 10 
+RADIO 4
+DEPOT_COORDINATED (X, Y)
+7 2
+CITY_COORDINATES   (INDEX, X, Y, CAPACIDADE):
+1	 2	 4   4
+2	 4   8   4
+3	 6	 1   2
+4	 8	 7   2
+5    9   3   3
+6    12  7   1
+STUDENTS_COORDINATES (INDEX, X, Y):
+1    1   5
+2    3   4
+3    3   1
+4    4   2
+5    8   5
+6    5   7
+7    6   8
+8    7   9
+9   12   8
+10  14   10
+11  14   6
+12  16   9
+13  17   5
+14  16   4
+15  15   3
+16  14   2
+

@@ -24,6 +24,6 @@ int main() {
 	V.init2();
 
 	CVRP CV;
-	CV.init(V);
+	CV.init2(V);
 	return 0;
 }

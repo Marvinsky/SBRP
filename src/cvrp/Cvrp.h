@@ -16,6 +16,7 @@
 #include <locale>
 #include <iostream>
 #include <map>
+#include <queue>
 
 using namespace std;
 
@@ -24,6 +25,22 @@ class punct_facet: public std::numpunct<charT> {
 protected:
 	charT do_decimal_point() const {
 		return sep;
+	}
+};
+
+struct CustomerDD {
+	Customer c;
+	double distance;
+	int demand;
+};
+
+class CompareCustomerSDD {
+public:
+	bool operator()(CustomerDD c1, CustomerDD c2) {
+		if (c1.distance > c2.distance) {
+			return true;
+		}
+		return false;
 	}
 };
 
@@ -41,14 +58,16 @@ private:
 	//Demanda de cada Customer
 	std::vector<int> p;
 	VRP vrp;
-	std::map<int, std::vector<Customer> > map;
+	std::map<int, Customer> map;
 
 	//Parameters to determinate the objective function
 	double** d;
 	bool** x;
 	double** s;
+	std::vector<Customer> allSucc;
 public:
 	void init(VRP vrp);
+	void init2(VRP vrp);
 	int getNroCustomers();
 	void setNroCustomers(int customersIncludingDepot);
 
@@ -90,6 +109,16 @@ public:
 	 std::vector<std::vector<Customer> > vCustomers, Customer c1,
 	 Customer c2, int route1, int route2);
 	 */
+
+	//New Implementation
+	Customer getCustomerLessDemand(std::vector<Customer> customers);
+	Customer getCustomerLessDistance(std::vector<Customer> customers,
+			Customer customer);
+	std::vector<Customer> removeCustomerFromRoute(
+			std::vector<Customer> customers, Customer customer);
+	bool isInFinalRoute(std::vector<Customer> customers, Customer customer);
+	std::vector<Customer> expand(std::vector<Customer> allCustomers,
+			Customer customer);
 };
 
 #endif /* CVRP_H_ */

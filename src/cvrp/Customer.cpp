@@ -16,6 +16,21 @@ Customer::Customer(int x, int y, int demand) {
 	this->demand = demand;
 }
 
+Customer::Customer(int id, int x, int y, int demand) {
+	this->id = id;
+	this->x = x;
+	this->y = y;
+	this->demand = demand;
+}
+
+int Customer::getId() {
+	return this->id;
+}
+
+void Customer::setId(int id) {
+	this->id = id;
+}
+
 int Customer::getX() {
 	return this->x;
 }

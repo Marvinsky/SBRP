@@ -101,6 +101,260 @@ void CVRP::setX(bool** x) {
 	this->x = x;
 }
 
+void CVRP::init2(VRP V) {
+	cout.setf(ios::fixed | ios::showpoint);
+	cout.precision(2);
+	std::cout.imbue(
+			std::locale(std::cout.getloc(), new punct_facet<char, ','>));
+
+	bool init1 = false;
+
+	if (init1) {
+		setNroCustomers(V.getBusStops().size() + 1);
+		Customer depot(0, V.getCoorSchool().getX(), V.getCoorSchool().getY(),
+				V.getCoorSchool().getCapacity());
+
+		std::vector<Stop> a;
+		a.insert(a.begin() + 0, V.getCoorSchool());
+		std::vector<Stop> b = V.getBusStops();
+		//Set AllCustomer but not depot
+		std::vector<Customer> allCustNotDepot;
+		for (size_t i = 0; i < V.getBusStops().size(); i++) {
+			Stop stop = V.getBusStops().at(i);
+			Customer customer(i + 1, stop.getX(), stop.getY(),
+					stop.getCapacity());
+			allCustNotDepot.insert(allCustNotDepot.begin() + i, customer);
+		}
+		setAllCustNoDepot(allCustNotDepot);
+
+		a.insert(a.end(), b.begin(), b.end());
+		std::vector<Customer> allCustomers;
+		for (size_t i = 0; i < a.size(); i++) {
+			Stop stop = a.at(i);
+			Customer customer(i, stop.getX(), stop.getY(), stop.getCapacity());
+			allCustomers.insert(allCustomers.begin() + i, customer);
+		}
+
+		for (size_t i = 0; i < allCustomers.size(); i++) {
+			Customer customer = allCustomers.at(i);
+			cout << "(" << customer.getX() << ", " << customer.getY() << ", "
+					<< customer.getDemand() << ")" << endl;
+		}
+		setDepot(depot);
+		setAllCustomers(allCustomers);
+		setK(V.getK());
+		setC(V.getCk());
+		setKmin(V.getKmin());
+	} else {
+		setNroCustomers(V.getBusAssigned().size() + 1);
+		Customer depot(0, V.getCoorSchool().getX(), V.getCoorSchool().getY(),
+				V.getCoorSchool().getCapacity());
+
+		std::vector<Stop> a;
+		a.insert(a.begin() + 0, V.getCoorSchool());
+		std::vector<Stop> b = V.getBusAssigned();
+
+		//Set AllCustomer but not depot
+		std::vector<Customer> allCustNotDepot;
+		for (size_t i = 0; i < V.getBusAssigned().size(); i++) {
+			Stop stop = V.getBusAssigned().at(i);
+			Customer customer(i + 1, stop.getX(), stop.getY(),
+					stop.getCapacity());
+			allCustNotDepot.insert(allCustNotDepot.begin() + i, customer);
+		}
+		setAllCustNoDepot(allCustNotDepot);
+
+		a.insert(a.end(), b.begin(), b.end());
+		std::vector<Customer> allCustomers;
+		for (size_t i = 0; i < a.size(); i++) {
+			Stop stop = a.at(i);
+			Customer customer(i, stop.getX(), stop.getY(), stop.getCapacity());
+			allCustomers.insert(allCustomers.begin() + i, customer);
+		}
+		cout << "List of customers! the first customert is the depot." << endl;
+		for (size_t i = 0; i < allCustomers.size(); i++) {
+			Customer customer = allCustomers.at(i);
+			cout << "(" << customer.getX() << ", " << customer.getY() << ", "
+					<< customer.getDemand() << ")" << endl;
+		}
+
+		x = new bool*[allCustomers.size()];
+		for (size_t i = 0; i < allCustomers.size(); i++) {
+			x[i] = new bool[allCustomers.size()];
+		}
+
+		for (size_t i = 0; i < allCustNotDepot.size(); i++) {
+			for (size_t j = 0; j < allCustomers.size(); j++) {
+				x[i][j] = false;
+			}
+		}
+
+		setDepot(depot);
+		setAllCustomers(allCustomers);
+		setK(V.getK());
+		setC(V.getCk());
+		setKmin(V.getKmin());
+	}
+	//Implementar
+	/*
+	 * So, for the second part you to create bus routes.
+	 A constructive (simple) algorithm would be choose the nearest bus stop that does not exceed the capactity
+	 When no more stops can be visited by the bus, it goes to the school
+	 And a new route is started.
+	 */
+
+	std::vector<Customer> allCustomersAssignedToAmap;
+	size_t totalCustomers = allCustomers.size();
+	unsigned int counter = 0;
+	std::vector<std::vector<Customer> > addRoutes;
+	while (counter < totalCustomers) {
+		cout << "size of the assigned map = "
+				<< allCustomersAssignedToAmap.size() << endl;
+
+		std::vector<Customer> customerUpdated = allCustNoDepot;
+		map.insert(pair<int, Customer>(0, getDepot()));
+		std::vector<Customer> route;
+		int sumaDemand = 0;
+		while (!map.empty()) {
+			cout << "size of the assigned map = "
+					<< allCustomersAssignedToAmap.size() << endl;
+			int index = map.begin()->first;
+			Customer pivot = map.begin()->second;
+			map.erase(index);
+			route.push_back(pivot);
+			allCustomersAssignedToAmap.push_back(pivot);
+			counter++;
+
+			std::vector<Customer> succNodes = expand(customerUpdated, pivot);
+			int k = 0;
+			for (size_t i = 0; i < succNodes.size(); i++) {
+				//Pruning
+				int count = 0;
+				while (k < 1 && count < 1) {
+					Customer node = succNodes.at(i);
+					std::map<int, Customer>::iterator mapIt = map.find(
+							node.getId());
+					if ((mapIt == map.end())
+							&& (!isInFinalRoute(allCustomersAssignedToAmap,
+									node))) {
+						if (sumaDemand + node.getDemand() <= getC()) {
+							sumaDemand = sumaDemand + node.getDemand();
+							map.insert(pair<int, Customer>(node.getId(), node));
+							k++;
+						} else {
+							//sumaDemand = 0;
+						}
+					} else {
+						cout
+								<< "Encuentra el elemento en el mapa y no hace nada"
+								<< endl;
+					}
+					count++;
+					cout << "Customer added to the map (" << node.getX() << ", "
+							<< node.getY() << ")" << endl;
+				}
+			}
+		}
+		route.push_back(getDepot());
+		addRoutes.push_back(route);
+	}
+	cout << "Routes generated greedy." << endl;
+	for (size_t i = 0; i < addRoutes.size(); i++) {
+		std::vector<Customer> route = addRoutes.at(i);
+		for (size_t j = 0; j < route.size(); j++) {
+			Customer c = route.at(j);
+			cout << c.getId() << ": (" << c.getX() << ", " << c.getY() << ")"
+					<< endl;
+		}
+	}
+
+}
+
+std::vector<Customer> CVRP::expand(std::vector<Customer> allCustomers,
+		Customer customer) {
+	std::vector<Customer> result;
+	priority_queue<CustomerDD, vector<CustomerDD>, CompareCustomerSDD> pq;
+	for (size_t j = 0; j < allCustomers.size(); j++) {
+		Customer pivot = allCustomers.at(j);
+
+		double distance = getDistanceIJ(customer, pivot);
+		int demand = pivot.getDemand();
+		CustomerDD c = { pivot, distance, demand };
+		pq.push(c);
+	}
+
+	int k = 0;
+	cout << "---------------" << endl;
+	while (!pq.empty()) {
+		CustomerDD t = pq.top();
+		result.insert(result.begin() + k, t.c);
+		cout << "id = " << t.c.getId() << endl;
+		cout << "(" << t.c.getX() << ", " << t.c.getY() << ")" << endl;
+		cout << "distance = " << t.distance << endl;
+		cout << "demand = " << t.demand << endl;
+		cout << "--------------------" << endl;
+		pq.pop();
+		k++;
+	}
+
+	for (size_t k = 0; k < result.size(); k++) {
+		Customer c = result.at(k);
+		cout << "(" << c.getX() << ", " << c.getY() << ") demand = "
+				<< c.getDemand() << endl;
+	}
+
+	return result;
+}
+
+bool CVRP::isInFinalRoute(std::vector<Customer> customers, Customer customer) {
+	for (size_t i = 0; i < customers.size(); i++) {
+		Customer pivot = customers.at(i);
+		if (compareCustomers(customer, pivot)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+Customer CVRP::getCustomerLessDistance(std::vector<Customer> customers,
+		Customer pivot) {
+	double menor = 999;
+	Customer result = pivot;
+	for (size_t i = 0; i < customers.size(); i++) {
+		Customer customer = customers.at(i);
+		double distance = getDistanceIJ(pivot, customer);
+		if (distance < menor) {
+			menor = distance;
+			result = customer;
+		}
+	}
+	return result;
+}
+
+Customer CVRP::getCustomerLessDemand(std::vector<Customer> customers) {
+	int menor = 999;
+	Customer cmenor;
+	for (size_t i = 0; i < customers.size(); i++) {
+		Customer c = customers.at(i);
+		if (c.getDemand() < menor) {
+			menor = c.getDemand();
+			cmenor = c;
+		}
+	}
+	return cmenor;
+}
+
+std::vector<Customer> CVRP::removeCustomerFromRoute(
+		std::vector<Customer> customers, Customer customer) {
+	for (size_t i = 0; i < customers.size(); i++) {
+		Customer c = customers.at(i);
+		if (compareCustomers(c, customer)) {
+			customers.erase(customers.begin() + i);
+		}
+	}
+	return customers;
+}
+
 void CVRP::init(VRP V) {
 	cout.setf(ios::fixed | ios::showpoint);
 	cout.precision(2);
@@ -181,9 +435,9 @@ void CVRP::init(VRP V) {
 		setC(V.getCk());
 		setKmin(V.getKmin());
 	}
-	//Validation of the numbers of enters to the depot
-	//Initialization of x
-	//Initialization of d
+//Validation of the numbers of enters to the depot
+//Initialization of x
+//Initialization of d
 
 	std::vector<Customer> allCustomers = getAllCustomers();
 	int nro_customers = getNroCustomers();
@@ -226,7 +480,7 @@ void CVRP::init(VRP V) {
 
 	setD(d_cvpr);
 
-	//CREATE CONSTRUCTIVE - Saving Computation
+//CREATE CONSTRUCTIVE - Saving Computation
 	std::vector<Saving> savingList;
 	int count1 = 0;
 	int nro_buses = getK();
@@ -249,7 +503,7 @@ void CVRP::init(VRP V) {
 		}
 	}
 
-	//Ordering
+//Ordering
 	Saving temp;
 	int flag = 1;
 	for (size_t i = 1; i < savingList.size() && flag; i++) {
@@ -290,11 +544,10 @@ void CVRP::init(VRP V) {
 
 	}
 
-	//Routes
+//Routes
 	cout << "Print route for each new route:" << endl;
 	for (size_t i = 0; i < routes.size(); i++) {
 		std::vector<Customer> customers = routes.at(i);
-		map.insert(pair<int, std::vector<Customer> >(i, customers));
 		cout << "route #" << i << endl;
 		for (size_t j = 0; j < customers.size(); j++) {
 			Customer c = customers.at(j);
@@ -303,8 +556,8 @@ void CVRP::init(VRP V) {
 		cout << "\n";
 	}
 
-	//Best feasible merge
-	//1.- look for 0, j
+//Best feasible merge
+//1.- look for 0, j
 	/*
 	 * Step 2. Best feasible merge (Parallel version)
 	 Starting from the top of the savings list, execute the following:
@@ -371,9 +624,6 @@ void CVRP::init(VRP V) {
 				}
 			}
 			if (c1IsFound && depotIsFound) {
-				map.insert(
-						pair<int, std::vector<Customer> >(route_number,
-								routes.at(route_number)));
 				firstCondition = true;
 			} else {
 				cout << "Not" << endl;
@@ -406,9 +656,6 @@ void CVRP::init(VRP V) {
 			}
 
 			if (depot2IsFound && c2IsFound) {
-				map.insert(
-						pair<int, std::vector<Customer> >(route_number2,
-								routes.at(route_number2)));
 				secondCondition = true;
 			} else {
 				cout << "Not2" << endl;
@@ -492,8 +739,8 @@ void CVRP::init(VRP V) {
 		}
 	}
 
-	//Route Extension
-	//Routes
+//Route Extension
+//Routes
 	cout << "Print routes after the first merge process:" << endl;
 	for (size_t i = 0; i < routes.size(); i++) {
 		std::vector<Customer> customers = routes.at(i);
