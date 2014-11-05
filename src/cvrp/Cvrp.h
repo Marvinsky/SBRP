@@ -12,6 +12,7 @@
 #include "Customer.h"
 #include "../clustering/Vrp.h"
 #include "Saving.h"
+#include "Route.h"
 
 #include <locale>
 #include <iostream>
@@ -110,7 +111,7 @@ public:
 	void setS(double** s);
 
 	//Formulate
-	double getFO();
+	double getFO(std::vector<std::vector<Customer> > allRoutes);
 	double getDistanceIJ(Customer c1, Customer c2);
 	bool compareCustomers(Customer c1, Customer c2);
 

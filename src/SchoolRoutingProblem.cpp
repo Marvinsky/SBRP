@@ -30,5 +30,9 @@ int main() {
 	CV.greedy(V);
 	CV.savingAlgorithm();
 	CV.initialSolutionReport();
+	double costGreedy = CV.getFO(CV.getAllRoutesGreedy());
+	cout << "Cost Greedy = " << costGreedy << endl;
+	double costSaving = CV.getFO(CV.getAllRoutesSaving());
+	cout << "Cost Saving = " << costSaving << endl;
 	return 0;
 }

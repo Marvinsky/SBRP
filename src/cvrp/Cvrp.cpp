@@ -1200,13 +1200,14 @@ void CVRP::init(VRP V) {
 
 }
 
-double CVRP::getFO() {
+double CVRP::getFO(std::vector<std::vector<Customer> > allRoutes) {
 	double results = 0;
-	std::vector<Customer> allCustomers = getAllCustomers();
-	for (size_t i = 0; i < allCustomers.size(); i++) {
-		for (size_t j = 0; j < allCustomers.size(); j++) {
-			results = results + d[i][j] * x[i][j];
-		}
+	for (size_t i = 0; i < allRoutes.size(); i++) {
+		std::vector<Customer> route = allRoutes.at(i);
+		Route r;
+		r.setRoute(route);
+		double cost = r.getCost();
+		results = results + cost;
 	}
 	return results;
 }
