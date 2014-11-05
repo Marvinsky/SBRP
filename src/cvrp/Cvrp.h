@@ -49,7 +49,8 @@ private:
 	int nroCustomers;
 	std::vector<Customer> allCustomers;
 	std::vector<Customer> allCustNoDepot;
-	std::vector<std::vector<Customer> > allRoutes;
+	std::vector<std::vector<Customer> > allRoutesGreedy;
+	std::vector<std::vector<Customer> > allRoutesSaving;
 	//A set of K identical vehicles, each with capacity C
 	int K;
 	int C;
@@ -77,8 +78,12 @@ public:
 	std::vector<Customer> getAllCustNoDepot();
 	void setAllCustNoDepot(std::vector<Customer> allCustNoDepot);
 
-	std::vector<std::vector<Customer> > getAllRoutes();
-	void setAllRoutes(std::vector<std::vector<Customer> > allRoutes);
+	std::vector<std::vector<Customer> > getAllRoutesGreedy();
+	void setAllRoutesGreedy(std::vector<std::vector<Customer> > allRoutes);
+
+	std::vector<std::vector<Customer> > getAllRoutesSaving();
+	void setAllRoutesSaving(
+			std::vector<std::vector<Customer> > allRoutesSaving);
 
 	int getK();
 	void setK(int K);
@@ -119,6 +124,10 @@ public:
 	std::vector<Customer> expand(std::vector<Customer> allCustomers,
 			Customer customer);
 	void savingAlgorithm();
+	int getRouteDemand(std::vector<Customer> customers);
+
+	//Generate Reports
+	void initialSolutionReport();
 
 };
 

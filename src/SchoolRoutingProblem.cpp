@@ -29,5 +29,6 @@ int main() {
 	CVRP CV;
 	CV.greedy(V);
 	CV.savingAlgorithm();
+	CV.initialSolutionReport();
 	return 0;
 }
