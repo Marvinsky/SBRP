@@ -790,6 +790,87 @@ void CVRP::initialSolutionReport() {
 	result.close();
 }
 
+double CVRP::twoOptRoute(std::vector<std::vector<Customer> > routes) {
+	double sumAllFO = 0.0;
+	cout << "number of all the routes = " << routes.size() << endl;
+	for (unsigned int i = 0; i < routes.size(); i++) {
+		std::vector<Customer> route = routes.at(i);
+		double routeFO = getFO(route);
+		std::vector<Customer> newRoute;
+		std::vector<Customer> bestRoute = route;
+		double bestFO = routeFO;
+		/*
+		 cout << "--------route#" << i << "-----------------" << endl;
+		 for (size_t m = 0; m < bestRoute.size(); m++) {
+		 Customer c = bestRoute.at(m);
+		 cout << "(" << c.getX() << ", " << c.getY() << ")-> ";
+		 }
+		 cout << "\n";
+		 cout << cout << "-------------------------" << endl;
+		 */
+		for (unsigned int j = 0; j < bestRoute.size() - 1; j++) {
+			for (unsigned int k = 0; k < bestRoute.size() - 1; k++) {
+				newRoute = doTwoOpt(j, k, bestRoute);
+				/*
+				 cout << "----new-route-generated#-----------------" << endl;
+				 for (size_t m = 0; m < newRoute.size(); m++) {
+				 Customer c = newRoute.at(m);
+				 cout << "(" << c.getX() << ", " << c.getY() << ")-> ";
+				 }
+				 cout << "\n";
+				 cout << cout << "-------------------------" << endl;
+				 */
+				double newFO = getFO(newRoute);
+				if (newFO < bestFO) {
+					bestFO = newFO;
+					bestRoute = newRoute;
+				}
+			}
+		}
+		sumAllFO = sumAllFO + bestFO;
+		//cout << "bestFO = " << bestFO << endl;
+	}
+
+	return sumAllFO;
+}
+
+double CVRP::getFO(std::vector<Customer> route) {
+	Route r;
+	r.setRoute(route);
+	double cost = r.getCost();
+	return cost;
+}
+
+std::vector<Customer> CVRP::doTwoOpt(int c1, int c2,
+		std::vector<Customer> route) {
+	int size = route.size();
+	Customer* newRoute = new Customer[size];
+	std::vector<Customer> result;
+	int temp = c2;
+	for (int i = 0; i <= c1; i++) {
+		newRoute[i] = route[i];
+	}
+
+	for (int i = c1; i <= c2; i++) {
+		if (i == 0) {
+			newRoute[i] = route[i];
+		} else {
+			newRoute[i] = route[temp];
+			temp = temp - 1;
+		}
+	}
+
+	for (int i = c2 + 1; i < size; i++) {
+		newRoute[i] = route[i];
+	}
+
+	for (int i = 0; i < size; i++) {
+		result.insert(result.begin() + i, newRoute[i]);
+	}
+
+	return result;
+}
+
 std::vector<Customer> CVRP::removeCustomerFromRoute(
 		std::vector<Customer> customers, Customer customer) {
 	for (size_t i = 0; i < customers.size(); i++) {

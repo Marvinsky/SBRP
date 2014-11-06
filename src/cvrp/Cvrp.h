@@ -112,6 +112,7 @@ public:
 
 	//Formulate
 	double getFO(std::vector<std::vector<Customer> > allRoutes);
+	double getFO(std::vector<Customer> route);
 	double getDistanceIJ(Customer c1, Customer c2);
 	bool compareCustomers(Customer c1, Customer c2);
 
@@ -129,7 +130,8 @@ public:
 
 	//Generate Reports
 	void initialSolutionReport();
-
+	double twoOptRoute(std::vector<std::vector<Customer> > routes);
+	std::vector<Customer> doTwoOpt(int i, int j, std::vector<Customer> route);
 };
 
 #endif /* CVRP_H_ */

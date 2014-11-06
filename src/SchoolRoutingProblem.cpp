@@ -34,5 +34,9 @@ int main() {
 	cout << "Cost Greedy = " << costGreedy << endl;
 	double costSaving = CV.getFO(CV.getAllRoutesSaving());
 	cout << "Cost Saving = " << costSaving << endl;
+	double maxTwoOptGreedy = CV.twoOptRoute(CV.getAllRoutesGreedy());
+	cout << "Max two-opt greedy = " << maxTwoOptGreedy << endl;
+	double maxTwoOptSaving = CV.twoOptRoute(CV.getAllRoutesSaving());
+	cout << "Max two-opt saving = " << maxTwoOptSaving << endl;
 	return 0;
 }
