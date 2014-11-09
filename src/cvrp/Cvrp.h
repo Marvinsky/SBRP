@@ -132,6 +132,14 @@ public:
 	void initialSolutionReport();
 	double twoOptRoute(std::vector<std::vector<Customer> > routes);
 	std::vector<Customer> doTwoOpt(int i, int j, std::vector<Customer> route);
+
+	//Iterative Local Search
+	double ILS(std::vector<std::vector<Customer> > routes);
+	std::vector<std::vector<Customer> > twoOptRouteILS(
+			std::vector<std::vector<Customer> > routes);
+	std::vector<std::vector<Customer> > perturbation(
+			std::vector<std::vector<Customer> > S, int n);
+
 };
 
 #endif /* CVRP_H_ */

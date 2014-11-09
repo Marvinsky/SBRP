@@ -792,7 +792,6 @@ void CVRP::initialSolutionReport() {
 
 double CVRP::twoOptRoute(std::vector<std::vector<Customer> > routes) {
 	double sumAllFO = 0.0;
-	cout << "number of all the routes = " << routes.size() << endl;
 	for (unsigned int i = 0; i < routes.size(); i++) {
 		std::vector<Customer> route = routes.at(i);
 		double routeFO = getFO(route);
@@ -880,6 +879,83 @@ std::vector<Customer> CVRP::removeCustomerFromRoute(
 		}
 	}
 	return customers;
+}
+
+double CVRP::ILS(std::vector<std::vector<Customer> > routes) {
+	int maxIter = 80;
+	std::vector<std::vector<Customer> > SCero = routes;
+	std::vector<std::vector<Customer> > S = twoOptRouteILS(SCero);
+	double Svalue = getFO(S);
+	int iter = 0;
+	int permutationNumber = 10;
+	do {
+		iter = iter + 1;
+		//Perturbacao
+		std::vector<std::vector<Customer> > SPrima = perturbation(S,
+				permutationNumber);
+		std::vector<std::vector<Customer> > STwoPrima = twoOptRouteILS(SPrima);
+		double STwoPrimaValue = getFO(STwoPrima);
+		if (STwoPrimaValue < Svalue) {
+			Svalue = STwoPrimaValue;
+		}
+	} while (iter < maxIter);
+	return Svalue;
+}
+
+std::vector<std::vector<Customer> > CVRP::perturbation(
+		std::vector<std::vector<Customer> > S, int n) {
+	std::vector<std::vector<Customer> > result;
+	int size = S.size();
+	int count = 0;
+	do {
+		count = count + 1;
+		int r1 = 0;
+		int r2 = 0;
+		srand(time(NULL));
+		r1 = rand() % size;
+		r2 = rand() % size;
+		while (r1 == r2) {
+			r1 = rand() % size;
+			r2 = rand() % size;
+		}
+		for (int i = 0; i < size; i++) {
+			std::vector<Customer> route;
+			route = doTwoOpt(r1, r2, S.at(i));
+			result.insert(result.begin() + i, route);
+		}
+		S = result;
+	} while (count < n);
+	return S;
+}
+
+std::vector<std::vector<Customer> > CVRP::twoOptRouteILS(
+		std::vector<std::vector<Customer> > routes) {
+	double sumAllFO = 0.0;
+	std::vector<std::vector<Customer> > allBestRoutes;
+	for (unsigned int i = 0; i < routes.size(); i++) {
+		std::vector<Customer> route = routes.at(i);
+		double routeFO = getFO(route);
+		std::vector<Customer> newRoute;
+		std::vector<Customer> bestRoute = route;
+		double bestFO = routeFO;
+
+		for (unsigned int j = 0; j < bestRoute.size() - 1; j++) {
+			for (unsigned int k = 0; k < bestRoute.size() - 1; k++) {
+				newRoute = doTwoOpt(j, k, bestRoute);
+
+				double newFO = getFO(newRoute);
+				if (newFO < bestFO) {
+					bestFO = newFO;
+					bestRoute = newRoute;
+				}
+			}
+		}
+		allBestRoutes.insert(allBestRoutes.begin() + i, bestRoute);
+		sumAllFO = sumAllFO + bestFO;
+		//cout << "bestFO = " << bestFO << endl;
+	}
+
+	return allBestRoutes;
 }
 
 void CVRP::init(VRP V) {

@@ -34,9 +34,14 @@ int main() {
 	cout << "Cost Greedy = " << costGreedy << endl;
 	double costSaving = CV.getFO(CV.getAllRoutesSaving());
 	cout << "Cost Saving = " << costSaving << endl;
-	double maxTwoOptGreedy = CV.twoOptRoute(CV.getAllRoutesGreedy());
-	cout << "Max two-opt greedy = " << maxTwoOptGreedy << endl;
-	double maxTwoOptSaving = CV.twoOptRoute(CV.getAllRoutesSaving());
-	cout << "Max two-opt saving = " << maxTwoOptSaving << endl;
+	double minTwoOptGreedy = CV.twoOptRoute(CV.getAllRoutesGreedy());
+	cout << "Min two-opt greedy = " << minTwoOptGreedy << endl;
+	double minTwoOptSaving = CV.twoOptRoute(CV.getAllRoutesSaving());
+	cout << "Min two-opt saving = " << minTwoOptSaving << endl;
+	cout << "Metaheuristics:" << endl;
+	double minILSGreedy = CV.ILS(CV.getAllRoutesGreedy());
+	cout << "Min ILS greedy = " << minILSGreedy << endl;
+	double minILSSaving = CV.ILS(CV.getAllRoutesSaving());
+	cout << "Min ILS saving = " << minILSSaving << endl;
 	return 0;
 }
