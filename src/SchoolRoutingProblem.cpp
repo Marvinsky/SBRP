@@ -30,18 +30,41 @@ int main() {
 	CV.greedy(V);
 	CV.savingAlgorithm();
 	CV.initialSolutionReport();
+	cout << "\nMinimize the routes.\n" << endl;
 	double costGreedy = CV.getFO(CV.getAllRoutesGreedy());
 	cout << "Cost Greedy = " << costGreedy << endl;
 	double costSaving = CV.getFO(CV.getAllRoutesSaving());
 	cout << "Cost Saving = " << costSaving << endl;
+	cout << "\nTwo opt in a route." << endl;
 	double minTwoOptGreedy = CV.twoOptRoute(CV.getAllRoutesGreedy());
-	cout << "Min two-opt greedy = " << minTwoOptGreedy << endl;
+	cout << "Min two-opt in a route greedy = " << minTwoOptGreedy << endl;
 	double minTwoOptSaving = CV.twoOptRoute(CV.getAllRoutesSaving());
-	cout << "Min two-opt saving = " << minTwoOptSaving << endl;
-	cout << "Metaheuristics:" << endl;
+	cout << "Min two-opt in a route saving = " << minTwoOptSaving << endl;
+	cout << "\nTwo opt between routes." << endl;
+	double minTwoOptBetweenRoutesGreedy = CV.twoOptBetweenRoutes(
+			CV.getAllRoutesGreedy());
+	cout << "Min two opt between routes greedy = "
+			<< minTwoOptBetweenRoutesGreedy << endl;
+
+	double minTwoOptBetweenRoutesSaving = CV.twoOptBetweenRoutes(
+			CV.getAllRoutesSaving());
+	cout << "Min two opt between routes saving = "
+			<< minTwoOptBetweenRoutesSaving << endl;
+
+	cout << "\nMetaheuristics:\n" << endl;
 	double minILSGreedy = CV.ILS(CV.getAllRoutesGreedy());
-	cout << "Min ILS greedy = " << minILSGreedy << endl;
+	cout << "Min ILS greedy with 2opt in the route = " << minILSGreedy << endl;
 	double minILSSaving = CV.ILS(CV.getAllRoutesSaving());
-	cout << "Min ILS saving = " << minILSSaving << endl;
+	cout << "Min ILS saving with 2opt in the route= " << minILSSaving << endl;
+
+	CV.printRoutes(CV.getAllRoutesGreedy());
+	double minILS2optBRGreedy = CV.ILSBetweenRoutes(CV.getAllRoutesGreedy());
+	cout << "Min ILS greedy with 2opt between routes = " << minILS2optBRGreedy
+			<< endl;
+	CV.printRoutes(CV.getAllRoutesSaving());
+	double minILS2optBRSaving = CV.ILSBetweenRoutes(CV.getAllRoutesSaving());
+	cout << "Min ILS saving with 2opt between routes = " << minILS2optBRSaving
+			<< endl;
+
 	return 0;
 }
