@@ -881,7 +881,7 @@ std::vector<Customer> CVRP::removeCustomerFromRoute(
 	return customers;
 }
 
-double CVRP::ILS(std::vector<std::vector<Customer> > routes) {
+double CVRP::ILSInTheRoute(std::vector<std::vector<Customer> > routes) {
 	int maxIter = 20;
 	std::vector<std::vector<Customer> > SCero = routes;
 	std::vector<std::vector<Customer> > S = twoOptRouteILS(SCero);
@@ -891,7 +891,7 @@ double CVRP::ILS(std::vector<std::vector<Customer> > routes) {
 	do {
 		iter = iter + 1;
 		//Perturbation
-		std::vector<std::vector<Customer> > SPrima = perturbation(S,
+		std::vector<std::vector<Customer> > SPrima = perturbationInTheRoute(S,
 				permutationNumber);
 		std::vector<std::vector<Customer> > STwoPrima = twoOptRouteILS(SPrima);
 		double STwoPrimaValue = getFO(STwoPrima);
@@ -903,20 +903,21 @@ double CVRP::ILS(std::vector<std::vector<Customer> > routes) {
 }
 
 double CVRP::ILSBetweenRoutes(std::vector<std::vector<Customer> > routes) {
-	int maxIter = 20;
+	int maxIter = 5;
 	std::vector<std::vector<Customer> > SCero = routes;
-	std::vector<std::vector<Customer> > S = twoOptBetweenRoutesILS(SCero);
+	std::vector<std::vector<Customer> > S = exchangingBetweenRoutesILS(SCero);
 	double Svalue = getFO(S);
 	double iter = 0;
-	int permutationNumber = 3;
+	int permutationNumber = 2;
 	std::vector<std::vector<Customer> > allBestRoutes = routes;
 	do {
 		iter = iter + 1;
 		//Pertubation
-		std::vector<std::vector<Customer> > SPrima = perturbation(S,
-				permutationNumber);
-		std::vector<std::vector<Customer> > STwoPrima = twoOptBetweenRoutesILS(
-				SPrima);
+		std::vector<std::vector<Customer> > SPrima = perturbationBetweenRoutes(
+				S, permutationNumber);
+
+		std::vector<std::vector<Customer> > STwoPrima =
+				exchangingBetweenRoutesILS(SPrima);
 		double STwoPrimaValue = getFO(STwoPrima);
 		if (STwoPrimaValue < Svalue) {
 			Svalue = STwoPrimaValue;
@@ -926,34 +927,74 @@ double CVRP::ILSBetweenRoutes(std::vector<std::vector<Customer> > routes) {
 	return Svalue;
 }
 
-std::vector<std::vector<Customer> > CVRP::perturbation(
+std::vector<std::vector<Customer> > CVRP::perturbationInTheRoute(
 		std::vector<std::vector<Customer> > S, int n) {
 	std::vector<std::vector<Customer> > result;
 
 	int size = S.size();
 	int count = 0;
-	do {
-		count = count + 1;
-		int r1 = 0;
-		int r2 = 0;
-		for (int i = 0; i < size; i++) {
-			int size2 = S.at(i).size();
-			srand(time(NULL));
-			r1 = rand() % size2;
-			r2 = rand() % size2;
 
-			if (size2 == 3) {
+	do {
+		for (int i = 0; i < size; i++) {
+			int r1 = 0;
+			int r2 = 0;
+			int sizeMax = S.at(i).size();
+			srand(time(NULL));
+			r1 = rand() % sizeMax;
+			r2 = rand() % sizeMax;
+
+			if (sizeMax == 3) {
 				r1 = 1;
 				r2 = 1;
 			} else {
 				while (r1 == r2) {
-					r1 = rand() % size2;
-					r2 = rand() % size2;
+					r1 = rand() % sizeMax;
+					r2 = rand() % sizeMax;
 				}
+
 			}
 			S.at(i) = doTwoOpt(r1, r2, S.at(i));
 		}
+		count = count + 1;
 	} while (count < n);
+
+	return S;
+}
+
+std::vector<std::vector<Customer> > CVRP::perturbationBetweenRoutes(
+		std::vector<std::vector<Customer> > S, int n) {
+
+	int size = S.size();
+	int count = 0;
+
+	do {
+		std::vector<std::vector<Customer> > result;
+
+		for (int i = 0; i < size; i++) {
+			int r1 = 0;
+			int r2 = 0;
+			srand(time(NULL));
+			r1 = rand() % size;
+			r2 = rand() % size;
+
+			while (r1 == r2) {
+				r1 = rand() % size;
+				r2 = rand() % size;
+			}
+
+			vector<Customer> route = S.at(r1);
+			vector<Customer> pivot = S.at(r2);
+			result = doExchangingtRoutes(route, pivot);
+
+			route = result.at(0);
+			pivot = result.at(1);
+			S.at(r1) = result.at(0);
+			S.at(r2) = result.at(1);
+
+		}
+		count = count + 1;
+	} while (count < n);
+
 	return S;
 }
 
@@ -987,11 +1028,11 @@ std::vector<std::vector<Customer> > CVRP::twoOptRouteILS(
 	return allBestRoutes;
 }
 
-std::vector<std::vector<Customer> > CVRP::twoOptBetweenRoutesILS(
+std::vector<std::vector<Customer> > CVRP::exchangingBetweenRoutesILS(
 		std::vector<std::vector<Customer> > routes) {
 
 	std::vector<std::vector<Customer> > result;
-	std::vector<std::vector<Customer> > allBestRoutes;
+	std::vector<std::vector<Customer> > allBestRoutes = routes;
 	double bestSumRoutes = getFO(routes);
 	std::vector<Customer> bestRoute;
 	std::vector<Customer> bestPivot;
@@ -1001,7 +1042,7 @@ std::vector<std::vector<Customer> > CVRP::twoOptBetweenRoutesILS(
 		for (unsigned int j = 0; j < routes.size(); j++) {
 			std::vector<Customer> pivot = routes.at(j);
 			if (i != j) {
-				result = doTwoOptRoutes(route, pivot);
+				result = doExchangingtRoutes(route, pivot);
 
 				route = result.at(0);
 				pivot = result.at(1);
@@ -1021,7 +1062,8 @@ std::vector<std::vector<Customer> > CVRP::twoOptBetweenRoutesILS(
 	return allBestRoutes;
 }
 
-double CVRP::twoOptBetweenRoutes(std::vector<std::vector<Customer> > routes) {
+double CVRP::exchangingBetweenRoutes(
+		std::vector<std::vector<Customer> > routes) {
 //printRoutes(routes);
 	std::vector<std::vector<Customer> > result;
 	std::vector<std::vector<Customer> > allBestRoutes;
@@ -1045,7 +1087,7 @@ double CVRP::twoOptBetweenRoutes(std::vector<std::vector<Customer> > routes) {
 
 				//printRoute(route);
 				//printRoute(pivot);
-				result = doTwoOptRoutes(route, pivot);
+				result = doExchangingtRoutes(route, pivot);
 				//printRoute(result.at(0));
 				//printRoute(result.at(1));
 				route = result.at(0);
@@ -1076,7 +1118,7 @@ double CVRP::twoOptBetweenRoutes(std::vector<std::vector<Customer> > routes) {
 	return bestSumRoutes;
 }
 
-std::vector<std::vector<Customer> > CVRP::doTwoOptRoutes(
+std::vector<std::vector<Customer> > CVRP::doExchangingtRoutes(
 		std::vector<Customer> route, std::vector<Customer> pivot) {
 	std::vector<std::vector<Customer> > result;
 	double bestSumRoutes = getFO(route) + getFO(pivot);

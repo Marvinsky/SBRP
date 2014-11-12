@@ -135,25 +135,29 @@ public:
 	std::vector<Customer> doTwoOpt(int i, int j, std::vector<Customer> route);
 
 	//Iterative Local Search
-	double ILS(std::vector<std::vector<Customer> > routes);
+	double ILSInTheRoute(std::vector<std::vector<Customer> > routes);
 	std::vector<std::vector<Customer> > twoOptRouteILS(
 			std::vector<std::vector<Customer> > routes);
 
-	std::vector<std::vector<Customer> > twoOptBetweenRoutesILS(
+	std::vector<std::vector<Customer> > exchangingBetweenRoutesILS(
 			std::vector<std::vector<Customer> > routes);
 
-	std::vector<std::vector<Customer> > perturbation(
+	std::vector<std::vector<Customer> > perturbationInTheRoute(
 			std::vector<std::vector<Customer> > S, int n);
+	std::vector<std::vector<Customer> > perturbationBetweenRoutes(
+				std::vector<std::vector<Customer> > S, int n);
+
 	//Local Search with 2 opt between routes
-	double twoOptBetweenRoutes(std::vector<std::vector<Customer> > routes);
-	std::vector<std::vector<Customer> > doTwoOptRoutes(
+	double exchangingBetweenRoutes(std::vector<std::vector<Customer> > routes);
+	std::vector<std::vector<Customer> > doExchangingtRoutes(
 			std::vector<Customer> route, std::vector<Customer> pivot);
 	void swapCustomers(Customer &c1, Customer &c2);
 	void printRoute(std::vector<Customer> route);
 	void printRoutes(std::vector<std::vector<Customer> > routes);
 
 	double ILSBetweenRoutes(std::vector<std::vector<Customer> > routes);
-	//Simulating Annealing
+	//GRASP: Greedy Randomized Adaptative Search Procedure.
+
 
 
 };
