@@ -101,14 +101,15 @@ private:
 	std::vector<Stop> emptyBusStopsByAssignment;
 	//For init2()
 	std::vector<Stop> busAssigned;
+	std::vector<Stop> busPreviouslyAssigned;
 	std::vector<Student> studentNotAssigned;
 	std::vector<Student> studentAssigned;
 	std::map<int, std::vector<Student> > map;
 
 	//For CVRP
-	int K;
-	int Kmin;
-	int Ck;
+	int K; //Number of Vehicles
+	int Kmin; //Number min of vehicles
+	int Ck; //Capacity of each vehicle
 	Stop coorSchool; //coordinate of the depot.
 
 public:
@@ -159,10 +160,11 @@ public:
 	std::vector<Student> getStudentsByStop(Stop s1);
 	bool isInGlobalVector(Student s1);
 	bool compare(Student s1, Student s2);
+	bool compare(Stop s1, Stop s2);
 	void init();
 	void greedy();
 
-	std::vector<Stop> getStopsOrderedByStudents(Student student);
+	std::vector<Stop> getStopsOrderedByStudents(Student student, int newRadio);
 
 	//Determine for each student which stop he/she
 	//should move to.
@@ -170,6 +172,8 @@ public:
 	//Bus Assigned in the init2
 	std::vector<Stop> getBusAssigned();
 	void setBussAssigned(std::vector<Stop> assigned);
+	std::vector<Stop> getBussPreviouslyAssigned();
+	void setBussPreviouslyAssigned(std::vector<Stop> previouslyAssigned);
 
 };
 
