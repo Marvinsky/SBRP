@@ -6,6 +6,7 @@
  */
 
 #include "Vrp.h"
+#include "../cvrp/Cvrp.h"
 
 #include <iostream>
 #include <fstream>
@@ -269,16 +270,16 @@ void VRP::greedy() {
 								queue2));
 				initialStop.setCapacity(queue2.size());
 				busAssigned.insert(busAssigned.begin() + l, initialStop);
-				cout << "Stop (" << initialStop.getX() << ", "
-						<< initialStop.getY() << ")" << endl;
-				for (std::map<Student, int>::size_type i = 0;
-						i != queue2.size(); i++) {
-					Student s = queue2.at(i);
-					cout << "(" << s.getCoord_x() << ", " << s.getCoord_y()
-							<< ")" << endl;
-				}
+//				cout << "Stop (" << initialStop.getX() << ", "
+//						<< initialStop.getY() << ")" << endl;
+//				for (std::map<Student, int>::size_type i = 0;
+//						i != queue2.size(); i++) {
+//					Student s = queue2.at(i);
+//					cout << "(" << s.getCoord_x() << ", " << s.getCoord_y()
+//							<< ")" << endl;
+//				}
 				l = l + 1;
-				cout << "=======================" << endl;
+//				cout << "=======================" << endl;
 				queue2.clear();
 			}
 		} else {
@@ -287,12 +288,13 @@ void VRP::greedy() {
 			m++;
 		}
 	}
-	cout << "Queue." << endl;
-	for (std::vector<Student>::size_type i = 0; i < queue.size(); i++) {
-		Student s = queue.at(i);
-		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
-	}
-	cout << "end queue." << endl;
+//	cout << "Queue." << endl;
+//	for (std::vector<Student>::size_type i = 0; i < queue.size(); i++) {
+//		Student s = queue.at(i);
+//		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
+//	}
+//	cout << "end queue." << endl;
+
 	std::vector<Student> allStudents = getStudentds();
 	int r = 0;
 	int o = 0;
@@ -312,17 +314,18 @@ void VRP::greedy() {
 			studentAssigned.insert(studentAssigned.begin() + o, student);
 		}
 	}
-	cout << "========================================" << endl;
-	cout << "List of students that are not assigned to queue." << endl;
-	for (std::vector<Student>::size_type i = 0; i != studentNotAssigned.size();
-			i++) {
-		Student s = studentNotAssigned.at(i);
-		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
-	}
+//	cout << "========================================" << endl;
+//	cout << "List of students that are not assigned to queue." << endl;
+//
+//	for (std::vector<Student>::size_type i = 0; i != studentNotAssigned.size();
+//			i++) {
+//		Student s = studentNotAssigned.at(i);
+//		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
+//	}
 
 	if (!studentNotAssigned.empty()) {
 		setBussPreviouslyAssigned(busAssigned);
-		cout << "All stops near to each student." << endl;
+//		cout << "All stops near to each student." << endl;
 		for (std::vector<Student>::size_type i = 0;
 				i != studentNotAssigned.size(); i++) {
 			Student studentToBeAssigned = studentNotAssigned.at(i);
@@ -336,44 +339,44 @@ void VRP::greedy() {
 				Stop firstStop = allStops.at(p);
 				if (isStudentAddedToTheStop == false) {
 					if (firstStop.getCapacity() < getCk()) {
-						cout << "The stop nearest from this student ("
-								<< studentToBeAssigned.getCoord_x() << ", "
-								<< studentToBeAssigned.getCoord_y()
-								<< ") is : (" << firstStop.getX() << ", "
-								<< firstStop.getY() << ")" << endl;
-						//Get the students assigned to this selected stop:
-						//From the map
+//						cout << "The stop nearest from this student ("
+//								<< studentToBeAssigned.getCoord_x() << ", "
+//								<< studentToBeAssigned.getCoord_y()
+//								<< ") is : (" << firstStop.getX() << ", "
+//								<< firstStop.getY() << ")" << endl;
+//						Get the students assigned to this selected stop:
+//						From the map
 						std::map<int, std::vector<Student> >::iterator mapIter =
 								map.find(firstStop.getId());
 
 						if (mapIter != map.end()) {
 							std::vector<Student> studentsAlreadyAssignedToStop =
 									mapIter->second;
-							cout
-									<< "List of students that were already assigned to stop."
-									<< endl;
+//							cout
+//									<< "List of students that were already assigned to stop."
+//									<< endl;
 							int tam = studentsAlreadyAssignedToStop.size();
-							for (std::vector<Student>::size_type i = 0;
-									i != studentsAlreadyAssignedToStop.size();
-									i++) {
-								Student s = studentsAlreadyAssignedToStop.at(i);
-								cout << "(" << s.getCoord_x() << ", "
-										<< s.getCoord_y() << ")" << endl;
-							}
+//							for (std::vector<Student>::size_type i = 0;
+//									i != studentsAlreadyAssignedToStop.size();
+//									i++) {
+//								Student s = studentsAlreadyAssignedToStop.at(i);
+//								cout << "(" << s.getCoord_x() << ", "
+//										<< s.getCoord_y() << ")" << endl;
+//							}
 							studentsAlreadyAssignedToStop.insert(
 									studentsAlreadyAssignedToStop.begin() + tam,
 									studentToBeAssigned);
 							//Updating the vector of students in the selected stop bus
 							mapIter->second = studentsAlreadyAssignedToStop;
 
-							cout << "Bus Stop students after update." << endl;
-							for (std::vector<Student>::size_type i = 0;
-									i != studentsAlreadyAssignedToStop.size();
-									i++) {
-								Student s = studentsAlreadyAssignedToStop.at(i);
-								cout << "(" << s.getCoord_x() << ", "
-										<< s.getCoord_y() << ")" << endl;
-							}
+//							cout << "Bus Stop students after update." << endl;
+//							for (std::vector<Student>::size_type i = 0;
+//									i != studentsAlreadyAssignedToStop.size();
+//									i++) {
+//								Student s = studentsAlreadyAssignedToStop.at(i);
+//								cout << "(" << s.getCoord_x() << ", "
+//										<< s.getCoord_y() << ")" << endl;
+//							}
 							//Update Student Assigned
 							studentAssigned.insert(
 									studentAssigned.begin()
@@ -402,11 +405,11 @@ void VRP::greedy() {
 
 							isStudentAddedToTheStop = true;
 						} else {
-							cout
-									<< "Error - can not find the element in the map."
-									<< endl;
+//							cout
+//									<< "Error - can not find the element in the map."
+//									<< endl;
 						}
-						cout << "end  for this stop." << endl;
+//						cout << "end  for this stop." << endl;
 					} else {
 						isStudentAddedToTheStop = false;
 					}
@@ -417,39 +420,39 @@ void VRP::greedy() {
 
 	}
 
-	cout << "List of students that are assigned to queue. size = "
-			<< studentAssigned.size() << endl;
-	for (std::vector<Student>::size_type i = 0; i != studentAssigned.size();
-			i++) {
-		Student s = studentAssigned.at(i);
-		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
-	}
+//	cout << "List of students that are assigned to queue. size = "
+//			<< studentAssigned.size() << endl;
+//	for (std::vector<Student>::size_type i = 0; i != studentAssigned.size();
+//			i++) {
+//		Student s = studentAssigned.at(i);
+//		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
+//	}
 	setBussAssigned(busAssigned);
-	cout << "List of Stops that are used.." << endl;
-	int suma = 0;
-	for (std::vector<Stop>::size_type i = 0; i != busAssigned.size(); i++) {
-		//cout << "begin" << endl;
-		Stop s = busAssigned.at(i);
-		cout << "(" << s.getX() << ", " << s.getY() << ") demand = "
-				<< s.getCapacity() << endl;
-
-		std::map<int, std::vector<Student> >::iterator mapIter = map.find(
-				s.getId());
-
-		if (mapIter != map.end()) {
-			std::vector<Student> students = mapIter->second;
-
-			for (std::vector<Student>::size_type i = 0; i != students.size();
-					i++) {
-				Student s = students.at(i);
-				cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")"
-						<< endl;
-			}
-		}
-		//cout << "end" << endl;
-		suma = suma + s.getCapacity();
-	}
-	cout << "suma = " << suma << endl;
+//	cout << "List of Stops that are used.." << endl;
+//	int suma = 0;
+//	for (std::vector<Stop>::size_type i = 0; i != busAssigned.size(); i++) {
+//		//cout << "begin" << endl;
+//		Stop s = busAssigned.at(i);
+//		cout << "(" << s.getX() << ", " << s.getY() << ") demand = "
+//				<< s.getCapacity() << endl;
+//
+//		std::map<int, std::vector<Student> >::iterator mapIter = map.find(
+//				s.getId());
+//
+//		if (mapIter != map.end()) {
+//			std::vector<Student> students = mapIter->second;
+//
+//			for (std::vector<Student>::size_type i = 0; i != students.size();
+//					i++) {
+//				Student s = students.at(i);
+//				cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")"
+//						<< endl;
+//			}
+//		}
+//		//cout << "end" << endl;
+//		suma = suma + s.getCapacity();
+//	}
+//	cout << "suma = " << suma << endl;
 
 }
 
@@ -483,15 +486,15 @@ void VRP::init() {
 				map.insert(
 						pair<int, std::vector<Student> >(initialStop.getId(),
 								queue2));
-				cout << "Stop (" << initialStop.getX() << ", "
-						<< initialStop.getY() << ")" << endl;
-				for (std::map<Student, int>::size_type i = 0;
-						i != queue2.size(); i++) {
-					Student s = queue2.at(i);
-					cout << "(" << s.getCoord_x() << ", " << s.getCoord_y()
-							<< ")" << endl;
-				}
-				cout << "=======================" << endl;
+//				cout << "Stop (" << initialStop.getX() << ", "
+//						<< initialStop.getY() << ")" << endl;
+//				for (std::map<Student, int>::size_type i = 0;
+//						i != queue2.size(); i++) {
+//					Student s = queue2.at(i);
+//					cout << "(" << s.getCoord_x() << ", " << s.getCoord_y()
+//							<< ")" << endl;
+//				}
+//				cout << "=======================" << endl;
 				queue2.clear();
 			}
 		} else {
@@ -501,36 +504,36 @@ void VRP::init() {
 		}
 	}
 
-	cout << "List of stop bus empties by distance." << endl;
-	for (std::map<Student, int>::size_type i = 0;
-			i != emptyBusStopsByDistance.size(); i++) {
-		Stop s = emptyBusStopsByDistance.at(i);
-		cout << "(" << s.getX() << ", " << s.getY() << ")" << endl;
-	}
-	cout << "=======================" << endl;
+//	cout << "List of stop bus empties by distance." << endl;
+//	for (std::map<Student, int>::size_type i = 0;
+//			i != emptyBusStopsByDistance.size(); i++) {
+//		Stop s = emptyBusStopsByDistance.at(i);
+//		cout << "(" << s.getX() << ", " << s.getY() << ")" << endl;
+//	}
+//	cout << "=======================" << endl;
 
-	cout << "List of stop bus empties  by assignment." << endl;
-	for (std::map<Student, int>::size_type i = 0;
-			i != emptyBusStopsByAssignment.size(); i++) {
-		Stop s = emptyBusStopsByAssignment.at(i);
-		cout << "(" << s.getX() << ", " << s.getY() << ")" << endl;
-	}
-	cout << "=======================" << endl;
-	/*
-	 cout << "List of stop bus with less than the capacity." << endl;
-	 for (std::map<Student, int>::size_type i = 0;
-	 i != lessStudentsInStopBus.size(); i++) {
-	 Stop s = lessStudentsInStopBus.at(i);
-	 cout << "(" << s.getX() << ", " << s.getY() << ")" << endl;
-	 }
-	 cout << "=======================" << endl;
-	 */
-	cout << "List of students added to the queue." << endl;
-	for (std::map<Student, int>::size_type i = 0; i != queue.size(); i++) {
-		Student s = queue.at(i);
-		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
-	}
-	cout << "=======================" << endl;
+//	cout << "List of stop bus empties  by assignment." << endl;
+//	for (std::map<Student, int>::size_type i = 0;
+//			i != emptyBusStopsByAssignment.size(); i++) {
+//		Stop s = emptyBusStopsByAssignment.at(i);
+//		cout << "(" << s.getX() << ", " << s.getY() << ")" << endl;
+//	}
+//	cout << "=======================" << endl;
+
+//	cout << "List of stop bus with less than the capacity." << endl;
+//	for (std::map<Student, int>::size_type i = 0;
+//			i != lessStudentsInStopBus.size(); i++) {
+//		Stop s = lessStudentsInStopBus.at(i);
+//		cout << "(" << s.getX() << ", " << s.getY() << ")" << endl;
+//	}
+//	cout << "=======================" << endl;
+
+//	cout << "List of students added to the queue." << endl;
+//	for (std::map<Student, int>::size_type i = 0; i != queue.size(); i++) {
+//		Student s = queue.at(i);
+//		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
+//	}
+//	cout << "=======================" << endl;
 
 	std::vector<Student> allStudents = getStudentds();
 	int r = 0;
@@ -549,14 +552,14 @@ void VRP::init() {
 		}
 	}
 
-	cout << "List of students that are not assigned to queue." << endl;
-	for (std::vector<Student>::size_type i = 0; i != studentNotAssigned.size();
-			i++) {
-		Student s = studentNotAssigned.at(i);
-		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
-	}
+//	cout << "List of students that are not assigned to queue." << endl;
+//	for (std::vector<Student>::size_type i = 0; i != studentNotAssigned.size();
+//			i++) {
+//		Student s = studentNotAssigned.at(i);
+//		cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")" << endl;
+//	}
 
-	cout << "All stops near to each student." << endl;
+//	cout << "All stops near to each student." << endl;
 	for (std::vector<Student>::size_type i = 0; i != studentNotAssigned.size();
 			i++) {
 		Student studentToBeAssigned = studentNotAssigned.at(i);
@@ -577,31 +580,31 @@ void VRP::init() {
 			cout << "List of students that were already assigned to stop."
 					<< endl;
 			int tam = studentsAlreadyAssignedToStop.size();
-			for (std::vector<Student>::size_type i = 0;
-					i != studentsAlreadyAssignedToStop.size(); i++) {
-				Student s = studentsAlreadyAssignedToStop.at(i);
-				cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")"
-						<< endl;
-			}
+//			for (std::vector<Student>::size_type i = 0;
+//					i != studentsAlreadyAssignedToStop.size(); i++) {
+//				Student s = studentsAlreadyAssignedToStop.at(i);
+//				cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")"
+//						<< endl;
+//			}
 			studentsAlreadyAssignedToStop.insert(
 					studentsAlreadyAssignedToStop.begin() + tam,
 					studentToBeAssigned);
 			//Updating the vector of students in the selected stop bus
 			mapIter->second = studentsAlreadyAssignedToStop;
 
-			cout << "Bus Stop students after update." << endl;
-			for (std::vector<Student>::size_type i = 0;
-					i != studentsAlreadyAssignedToStop.size(); i++) {
-				Student s = studentsAlreadyAssignedToStop.at(i);
-				cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")"
-						<< endl;
-			}
+//			cout << "Bus Stop students after update." << endl;
+//			for (std::vector<Student>::size_type i = 0;
+//					i != studentsAlreadyAssignedToStop.size(); i++) {
+//				Student s = studentsAlreadyAssignedToStop.at(i);
+//				cout << "(" << s.getCoord_x() << ", " << s.getCoord_y() << ")"
+//						<< endl;
+//			}
 		} else {
-			cout << "Error - can not find the element in the map." << endl;
+//			cout << "Error - can not find the element in the map." << endl;
 		}
-		cout << "end  for this stop." << endl;
+//		cout << "end  for this stop." << endl;
 	}
-	cout << "size stops = " << allStops.size() << endl;
+//	cout << "size stops = " << allStops.size() << endl;
 	std::vector<Stop> v_busStopsAssigned;
 	int u = 0;
 	for (std::vector<Stop>::size_type q = 0; q != allStops.size(); q++) {
@@ -625,29 +628,28 @@ void VRP::init() {
 			v_busStopsAssigned.insert(v_busStopsAssigned.begin() + u, stop);
 			u++;
 		} else {
-			cout << "no encuentra a alguno" << endl;
-			cout << "(" << stop.getX() << ", " << stop.getY() << ")" << endl;
+//			cout << "no encuentra a alguno" << endl;
+//			cout << "(" << stop.getX() << ", " << stop.getY() << ")" << endl;
 		}
 	}
 	//The bus stops final
 	setBusStops(v_busStopsAssigned);
-	cout << "algo " << endl;
-	cout << "size = " << getBusStops().size() << endl;
-	for (std::vector<Stop>::size_type i = 0; i != getBusStops().size(); i++) {
-		Stop stop2 = getBusStops().at(i);
-		cout << "(" << stop2.getX() << ", " << stop2.getY() << ")" << endl;
-		cout << "the new Capacity is = " << stop2.getCapacity() << endl;
-	}
+//	cout << "size = " << getBusStops().size() << endl;
+//	for (std::vector<Stop>::size_type i = 0; i != getBusStops().size(); i++) {
+//		Stop stop2 = getBusStops().at(i);
+//		cout << "(" << stop2.getX() << ", " << stop2.getY() << ")" << endl;
+//		cout << "the new Capacity is = " << stop2.getCapacity() << endl;
+//	}
 
-	for (std::vector<Student>::size_type i = 0; i != allStudents.size(); i++) {
-		Student student = allStudents.at(i);
-		Stop stop = getStopByStudent(student);
-		cout << "The student located at place (" << student.getCoord_x() << ", "
-				<< student.getCoord_y() << ")" << endl;
-
-		cout << " goes to the bus stop in the position (" << stop.getX() << ", "
-				<< stop.getY() << ")" << endl;
-	}
+//	for (std::vector<Student>::size_type i = 0; i != allStudents.size(); i++) {
+//		Student student = allStudents.at(i);
+//		Stop stop = getStopByStudent(student);
+//		cout << "The student located at place (" << student.getCoord_x() << ", "
+//				<< student.getCoord_y() << ")" << endl;
+//
+//		cout << " goes to the bus stop in the position (" << stop.getX() << ", "
+//				<< stop.getY() << ")" << endl;
+//	}
 
 	//Fill the new vector of Stops with the school coordinates
 
@@ -715,6 +717,68 @@ bool VRP::compare(Stop s1, Stop s2) {
 		return true;
 	}
 	return false;
+}
+
+void VRP::uploadFiles(char instances[], char result[]) {
+	std::fstream file(instances);
+	string instance;
+	string str;
+	int totalFiles = 0;
+	file >> str;
+	file >> totalFiles;
+	for (int i = 0; i < totalFiles; i++) {
+		file >> instance;
+		char *c = const_cast<char*>(instance.c_str());
+		VRP V1;
+		V1.uploadFile(c);
+		V1.greedy();
+
+		CVRP CV;
+		CV.greedy(V1);
+		CV.savingAlgorithm();
+		cout<<"\t\tbegin\n\n"<<endl;
+		cout << "\nMinimize the routes.\n\n" << endl;
+		double costGreedy = CV.getFO(CV.getAllRoutesGreedy());
+		cout << "Cost Greedy = " << costGreedy << endl;
+		double costSaving = CV.getFO(CV.getAllRoutesSaving());
+		cout << "Cost Saving = " << costSaving << endl;
+		cout << "\nTwo opt in a route.\n\n" << endl;
+		double minTwoOptGreedy = CV.twoOptRoute(CV.getAllRoutesGreedy());
+		cout << "Min two-opt in a route greedy = " << minTwoOptGreedy << endl;
+		double minTwoOptSaving = CV.twoOptRoute(CV.getAllRoutesSaving());
+		cout << "Min two-opt in a route saving = " << minTwoOptSaving << endl;
+		cout << "\nTwo opt between routes.\n\n" << endl;
+		double minTwoOptBetweenRoutesGreedy = CV.exchangingBetweenRoutes(
+				CV.getAllRoutesGreedy());
+		cout << "Min exchanging between routes greedy = "
+				<< minTwoOptBetweenRoutesGreedy << endl;
+
+		double minTwoOptBetweenRoutesSaving = CV.exchangingBetweenRoutes(
+				CV.getAllRoutesSaving());
+		cout << "Min exchaning between routes saving = "
+				<< minTwoOptBetweenRoutesSaving << endl;
+
+		cout << "\nMetaheuristics:\n\n" << endl;
+		double minILSGreedy = CV.ILSInTheRoute(CV.getAllRoutesGreedy());
+		cout << "Min ILS greedy with 2opt in the route = " << minILSGreedy
+				<< endl;
+		double minILSSaving = CV.ILSInTheRoute(CV.getAllRoutesSaving());
+		cout << "Min ILS saving with 2opt in the route = " << minILSSaving
+				<< endl;
+
+		//CV.printRoutes(CV.getAllRoutesGreedy());
+		double minILS2optBRGreedy = CV.ILSBetweenRoutes(
+				CV.getAllRoutesGreedy());
+		cout << "Min ILS greedy with exchanging customers between routes = "
+				<< minILS2optBRGreedy << endl;
+		//CV.printRoutes(CV.getAllRoutesSaving());
+		double minILS2optBRSaving = CV.ILSBetweenRoutes(
+				CV.getAllRoutesSaving());
+		cout << "Min ILS saving with exchanging customers between routes = "
+				<< minILS2optBRSaving << endl;
+		cout<<"\t\tend\n\n"<<endl;
+	}
+
 }
 
 void VRP::uploadFile(char pathFile[]) {
@@ -797,21 +861,20 @@ void VRP::uploadFile(char pathFile[]) {
 	for (int i = 0; i < nroStops; i++) {
 		for (int j = 0; j < nroStops; j++) {
 			double distance = getDistanceIJ(v_stops.at(i), v_stops.at(j));
-			cout << distance << " ";
+			//cout << distance << " ";
 			C[i][j] = distance;
 		}
-		cout << "\n";
+		//cout << "\n";
 	}
-	cout << "Imprimir costos from j to j." << endl;
-	for (int i = 0; i < nroStops; i++) {
-		for (int j = 0; j < nroStops; j++) {
-			cout << C[i][j] << " ";
-		}
-		cout << "\n";
-	}
+//	cout << "Imprimir costos from j to j." << endl;
+//	for (int i = 0; i < nroStops; i++) {
+//		for (int j = 0; j < nroStops; j++) {
+//			cout << C[i][j] << " ";
+//		}
+//		cout << "\n";
+//	}
 
 	//setC(C_s);
-
 //###########################################
 //Initialize Students
 	file >> str;

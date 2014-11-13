@@ -131,6 +131,7 @@ public:
 	int** getCoordStops();
 	void setCoordStops(int** coordStops);
 	void uploadFile(char pathFile[]);
+	void uploadFiles(char instances[], char result[]);
 	double getDistanceIJ(Stop s1, Stop s2);
 	double getDistanceLS(Student s1, Stop s2);
 	std::vector<Stop> getStops();

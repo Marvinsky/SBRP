@@ -18,18 +18,23 @@ int main() {
 
 	VRP V;
 	char input[] =
-	//	"C:\\workspaces\\metahuristica\\SchoolRoutingProblem\\src\\instancias\\002.vrp";
+			"C:\\workspaces\\metahuristica\\SchoolRoutingProblem\\src\\instancias\\instances.vrp";
 	//		"C:\\workspaces\\metahuristica\\SchoolRoutingProblem\\src\\instancias\\ex4_n6.pmv";
-			"C:\\workspaces\\metahuristica\\SchoolRoutingProblem\\src\\instancias\\003.vrp";
+	//		"C:\\workspaces\\metahuristica\\SchoolRoutingProblem\\src\\instancias\\003.vrp";
 	//		"C:\\Users\\Marvin\\Desktop\\Metaheuristica\\seminario3\\instancias\\002.vrp";
 	//		"C:\\Users\\Marvin\\Desktop\\Metaheuristica\\seminario3\\instancias\\ex4_n6.pmv";
 	V.uploadFile(input);
+	char result[] =
+			"C:\\workspaces\\metahuristica\\SchoolRoutingProblem\\src\\instancias\\results.vrp";
+
+	V.uploadFiles(input, result);
+	/*
 	V.greedy();
 
 	CVRP CV;
 	CV.greedy(V);
 	CV.savingAlgorithm();
-	CV.initialSolutionReport();
+	//CV.initialSolutionReport();
 	cout << "\nMinimize the routes.\n\n" << endl;
 	double costGreedy = CV.getFO(CV.getAllRoutesGreedy());
 	cout << "Cost Greedy = " << costGreedy << endl;
@@ -59,12 +64,12 @@ int main() {
 
 	//CV.printRoutes(CV.getAllRoutesGreedy());
 	double minILS2optBRGreedy = CV.ILSBetweenRoutes(CV.getAllRoutesGreedy());
-	cout << "Min ILS greedy with exchanging customers between routes = " << minILS2optBRGreedy
-			<< endl;
+	cout << "Min ILS greedy with exchanging customers between routes = "
+			<< minILS2optBRGreedy << endl;
 	//CV.printRoutes(CV.getAllRoutesSaving());
 	double minILS2optBRSaving = CV.ILSBetweenRoutes(CV.getAllRoutesSaving());
-	cout << "Min ILS saving with exchanging customers between routes = " << minILS2optBRSaving
-			<< endl;
-
+	cout << "Min ILS saving with exchanging customers between routes = "
+			<< minILS2optBRSaving << endl;
+	*/
 	return 0;
 }

@@ -196,12 +196,12 @@ void CVRP::greedy(VRP V) {
 			Customer customer(i, stop.getX(), stop.getY(), stop.getCapacity());
 			allCustomers.insert(allCustomers.begin() + i, customer);
 		}
-		cout << "List of customers! the first customert is the depot." << endl;
-		for (size_t i = 0; i < allCustomers.size(); i++) {
-			Customer customer = allCustomers.at(i);
-			cout << "(" << customer.getX() << ", " << customer.getY() << ", "
-					<< customer.getDemand() << ")" << endl;
-		}
+//		cout << "List of customers! the first customert is the depot." << endl;
+//		for (size_t i = 0; i < allCustomers.size(); i++) {
+//			Customer customer = allCustomers.at(i);
+//			cout << "(" << customer.getX() << ", " << customer.getY() << ", "
+//					<< customer.getDemand() << ")" << endl;
+//		}
 
 		x = new bool*[allCustomers.size()];
 		for (size_t i = 0; i < allCustomers.size(); i++) {
@@ -233,7 +233,7 @@ void CVRP::greedy(VRP V) {
 		x_cvpr[i] = new bool[nro_customers];
 		s_cvpr[i] = new double[nro_customers];
 	}
-	cout << "Save the distance in a d array of array" << endl;
+//	cout << "Save the distance in a d array of array" << endl;
 	for (int i = 0; i < nro_customers; i++) {
 		Customer customer = allCustomers.at(i);
 		for (int j = 0; j < nro_customers; j++) {
@@ -243,49 +243,49 @@ void CVRP::greedy(VRP V) {
 			x_cvpr[i][j] = false;
 		}
 	}
-	cout << "Imprimir distance from i to j:" << endl;
-	for (int i = 0; i < nro_customers; i++) {
-		for (int j = 0; j < nro_customers; j++) {
-			cout << d_cvpr[i][j] << " ";
-		}
-		cout << "\n";
-	}
+//	cout << "Imprimir distance from i to j:" << endl;
+//	for (int i = 0; i < nro_customers; i++) {
+//		for (int j = 0; j < nro_customers; j++) {
+//			cout << d_cvpr[i][j] << " ";
+//		}
+//		cout << "\n";
+//	}
 
-	cout << "Imprimir x from i to j." << endl;
-	for (int i = 0; i < nro_customers; i++) {
-		for (int j = 0; j < nro_customers; j++) {
-			cout << x_cvpr[i][j] << " ";
-		}
-		cout << "\n";
-	}
+//	cout << "Imprimir x from i to j." << endl;
+//	for (int i = 0; i < nro_customers; i++) {
+//		for (int j = 0; j < nro_customers; j++) {
+//			cout << x_cvpr[i][j] << " ";
+//		}
+//		cout << "\n";
+//	}
 
 	setD(d_cvpr);
 	setS(s_cvpr);
 	setX(x_cvpr);
 
-	//Implementar
-	/*
-	 * So, for the second part you to create bus routes.
-	 A constructive (simple) algorithm would be choose the nearest bus stop that does not exceed the capactity
-	 When no more stops can be visited by the bus, it goes to the school
-	 And a new route is started.
-	 */
+//	Implementar
+//
+//	 * So, for the second part you to create bus routes.
+//	 A constructive (simple) algorithm would be choose the nearest bus stop that does not exceed the capactity
+//	 When no more stops can be visited by the bus, it goes to the school
+//	 And a new route is started.
+//
 
 	std::vector<Customer> allCustomersAssignedToAmap;
 	size_t totalCustomers = allCustomers.size();
 	unsigned int counter = 0;
 	std::vector<std::vector<Customer> > addRoutes;
 	while (counter < totalCustomers) {
-		cout << "size of the assigned map = "
-				<< allCustomersAssignedToAmap.size() << endl;
+//		cout << "size of the assigned map = "
+//				<< allCustomersAssignedToAmap.size() << endl;
 
 		std::vector<Customer> customerUpdated = allCustNoDepot;
 		map.insert(pair<int, Customer>(0, getDepot()));
 		std::vector<Customer> route;
 		int sumaDemand = 0;
 		while (!map.empty()) {
-			cout << "size of the assigned map = "
-					<< allCustomersAssignedToAmap.size() << endl;
+//			cout << "size of the assigned map = "
+//					<< allCustomersAssignedToAmap.size() << endl;
 			int index = map.begin()->first;
 			Customer pivot = map.begin()->second;
 			map.erase(index);
@@ -313,13 +313,13 @@ void CVRP::greedy(VRP V) {
 							//sumaDemand = 0;
 						}
 					} else {
-						cout
-								<< "Encuentra el elemento en el mapa y no hace nada"
-								<< endl;
+//						cout
+//								<< "Encuentra el elemento en el mapa y no hace nada"
+//								<< endl;
 					}
 					count++;
-					cout << "Customer added to the map (" << node.getX() << ", "
-							<< node.getY() << ")" << endl;
+//					cout << "Customer added to the map (" << node.getX() << ", "
+//							<< node.getY() << ")" << endl;
 				}
 			}
 		}
@@ -327,26 +327,26 @@ void CVRP::greedy(VRP V) {
 		addRoutes.push_back(route);
 	}
 	setAllRoutesGreedy(addRoutes);
-	cout << "Routes generated greedy." << endl;
-	for (size_t i = 0; i < addRoutes.size(); i++) {
-		std::vector<Customer> route = addRoutes.at(i);
-		cout << "----------------------------------" << endl;
-		for (size_t j = 0; j < route.size(); j++) {
-			Customer c = route.at(j);
-			cout << c.getId() << ": (" << c.getX() << ", " << c.getY() << ")"
-					<< endl;
-		}
-	}
+//	cout << "Routes generated greedy." << endl;
+//	for (size_t i = 0; i < addRoutes.size(); i++) {
+//		std::vector<Customer> route = addRoutes.at(i);
+//		cout << "----------------------------------" << endl;
+//		for (size_t j = 0; j < route.size(); j++) {
+//			Customer c = route.at(j);
+//			cout << c.getId() << ": (" << c.getX() << ", " << c.getY() << ")"
+//					<< endl;
+//		}
+//	}
 
 }
 
 void CVRP::savingAlgorithm() {
 
-	//CREATE CONSTRUCTIVE - Saving Computation
-	/**
-	 * This algorithm naturally applies to problems for which
-	 * the number of vehicles is a decision variable.
-	 */
+//	CREATE CONSTRUCTIVE - Saving Computation
+//
+//	  This algorithm naturally applies to problems for which
+//	  the number of vehicles is a decision variable.
+//
 	std::vector<Saving> savingList;
 	std::vector<Saving> savingPrev;
 	int count1 = 0;
@@ -354,13 +354,13 @@ void CVRP::savingAlgorithm() {
 	std::vector<Customer> allCSaving = getAllCustNoDepot();
 	std::vector<vector<Customer> > allRoutes = getAllRoutesGreedy();
 
-	cout << "----------Customers and weigth----------------" << endl;
-	for (unsigned int i = 0; i < getAllCustNoDepot().size(); i++) {
-		Customer c = getAllCustNoDepot().at(i);
-		cout << "(" << c.getX() << ", " << c.getY() << ", " << c.getDemand()
-				<< ")" << endl;
-	}
-	cout << "----------------------------------------------" << endl;
+//	cout << "----------Customers and weigth----------------" << endl;
+//	for (unsigned int i = 0; i < getAllCustNoDepot().size(); i++) {
+//		Customer c = getAllCustNoDepot().at(i);
+//		cout << "(" << c.getX() << ", " << c.getY() << ", " << c.getDemand()
+//				<< ")" << endl;
+//	}
+//	cout << "----------------------------------------------" << endl;
 	for (unsigned int i = 0; i < nro_customers; i++) {
 		Customer customer = allCSaving.at(i);
 		for (unsigned int j = 0; j < nro_customers; j++) {
@@ -396,19 +396,19 @@ void CVRP::savingAlgorithm() {
 		}
 	}
 
-	cout << "Saving List after ordered." << endl;
+//	cout << "Saving List after ordered." << endl;
 	int m = 0;
-	for (size_t i = 0; i < savingList.size(); i++) {
-		Saving save = savingList.at(i);
-		Customer c1 = save.getSavingC1();
-		Customer c2 = save.getSavingC2();
-		double peso = save.getSavingPeso();
-		cout << "i = (" << c1.getX() << ", " << c1.getY() << ") j = ("
-				<< c2.getX() << ", " << c2.getY() << ") peso = " << peso
-				<< endl;
-	}
+//	for (size_t i = 0; i < savingList.size(); i++) {
+//		Saving save = savingList.at(i);
+//		Customer c1 = save.getSavingC1();
+//		Customer c2 = save.getSavingC2();
+//		double peso = save.getSavingPeso();
+//		cout << "i = (" << c1.getX() << ", " << c1.getY() << ") j = ("
+//				<< c2.getX() << ", " << c2.getY() << ") peso = " << peso
+//				<< endl;
+//	}
 
-	cout << "Insertion." << endl;
+//	cout << "Insertion." << endl;
 	std::vector<std::vector<Customer> > routes;
 	for (unsigned int i = 0; i < nro_customers; i++) {
 		Customer customer = getAllCustNoDepot().at(i);
@@ -423,33 +423,33 @@ void CVRP::savingAlgorithm() {
 	}
 
 	//Routes
-	cout << "Print route for each new route:" << endl;
-	for (size_t i = 0; i < routes.size(); i++) {
-		std::vector<Customer> customers = routes.at(i);
-		cout << "route #" << i << endl;
-		for (size_t j = 0; j < customers.size(); j++) {
-			Customer c = customers.at(j);
-			cout << "(" << c.getX() << ", " << c.getY() << ") - ";
-		}
-		cout << "\n";
-	}
+//	cout << "Print route for each new route:" << endl;
+//	for (size_t i = 0; i < routes.size(); i++) {
+//		std::vector<Customer> customers = routes.at(i);
+//		cout << "route #" << i << endl;
+//		for (size_t j = 0; j < customers.size(); j++) {
+//			Customer c = customers.at(j);
+//			cout << "(" << c.getX() << ", " << c.getY() << ") - ";
+//		}
+//		cout << "\n";
+//	}
 
-	//Best feasible merge
-	//1.- look for 0, j
-	/*
-	 * Step 2. Best feasible merge (Parallel version)
-	 Starting from the top of the savings list, execute the following:
-	 Given a saving sij, determine whether there exist two routes that can
-	 feasibility be merged:
-	 One starting with (0,j)
-	 One ending with (i,0)
-	 Combine these two routes by deleting (0,j) and (i,0) and introducing (i,j).
-	 *
-	 */
-
-	cout << "=========================================================="
-			<< endl;
-	cout << "Starting saving List process" << endl;
+//	Best feasible merge
+//	1.- look for 0, j
+//
+//	  Step 2. Best feasible merge (Parallel version)
+//	 Starting from the top of the savings list, execute the following:
+//	 Given a saving sij, determine whether there exist two routes that can
+//	 feasibility be merged:
+//	 One starting with (0,j)
+//	 One ending with (i,0)
+//	 Combine these two routes by deleting (0,j) and (i,0) and introducing (i,j).
+//
+//
+//
+//	cout << "=========================================================="
+//			<< endl;
+//	cout << "Starting saving List process" << endl;
 
 	for (size_t i = 0; i < savingList.size(); i++) {
 		bool firstCondition = false;
@@ -463,23 +463,23 @@ void CVRP::savingAlgorithm() {
 
 		Customer firstElement;
 		Customer secondElement;
-		cout << "=======Print route each time new SavingList is used========="
-				<< endl;
-		cout << "For saving customer1 = (" << customer1.getX() << ", "
-				<< customer1.getY() << ")" << endl;
-		cout << "For saving customer2 = (" << customer2.getX() << ", "
-				<< customer2.getY() << ")" << endl;
-		for (size_t i = 0; i < routes.size(); i++) {
-			std::vector<Customer> customers = routes.at(i);
-			cout << "route #" << i << endl;
-			for (size_t j = 0; j < customers.size(); j++) {
-				Customer c = customers.at(j);
-				cout << "(" << c.getX() << ", " << c.getY() << ") - ";
-			}
-			cout << "\n";
-		}
+//		cout << "=======Print route each time new SavingList is used========="
+//				<< endl;
+//		cout << "For saving customer1 = (" << customer1.getX() << ", "
+//				<< customer1.getY() << ")" << endl;
+//		cout << "For saving customer2 = (" << customer2.getX() << ", "
+//				<< customer2.getY() << ")" << endl;
+//		for (size_t i = 0; i < routes.size(); i++) {
+//			std::vector<Customer> customers = routes.at(i);
+//			cout << "route #" << i << endl;
+//			for (size_t j = 0; j < customers.size(); j++) {
+//				Customer c = customers.at(j);
+//				cout << "(" << c.getX() << ", " << c.getY() << ") - ";
+//			}
+//			cout << "\n";
+//		}
 
-		//First Condition
+//First Condition
 		for (size_t j = 0; j < routes.size(); j++) {
 			std::vector<Customer> customersRoutes = routes.at(j);
 
@@ -498,8 +498,8 @@ void CVRP::savingAlgorithm() {
 					if (compareCustomers(getDepot(), c)) {
 						depotIsFound = true;
 						firstElement = customersRoutes.at(pivot);
-						cout << "first Element = (" << firstElement.getX()
-								<< ", " << firstElement.getY() << ")" << endl;
+//						cout << "first Element = (" << firstElement.getX()
+//								<< ", " << firstElement.getY() << ")" << endl;
 						route_number = j;
 					}
 				}
@@ -507,7 +507,7 @@ void CVRP::savingAlgorithm() {
 			if (c1IsFound && depotIsFound) {
 				firstCondition = true;
 			} else {
-				cout << "Not" << endl;
+//				cout << "Not" << endl;
 			}
 
 		}
@@ -529,8 +529,8 @@ void CVRP::savingAlgorithm() {
 					if (compareCustomers(c, customer2)) {
 						c2IsFound = true;
 						secondElement = customersRoutes.at(pivot2 + 1);
-						cout << "second Element = (" << secondElement.getX()
-								<< ", " << secondElement.getY() << ")" << endl;
+//						cout << "second Element = (" << secondElement.getX()
+//								<< ", " << secondElement.getY() << ")" << endl;
 						route_number2 = j;
 					}
 				}
@@ -539,14 +539,14 @@ void CVRP::savingAlgorithm() {
 			if (depot2IsFound && c2IsFound) {
 				secondCondition = true;
 			} else {
-				cout << "Not2" << endl;
+//				cout << "Not2" << endl;
 			}
 
 		}
 		if (firstCondition && secondCondition) {
 			if (route_number != route_number2) {
-				cout << "route 1 = " << route_number << endl;
-				cout << "route 2 = " << route_number2 << endl;
+//				cout << "route 1 = " << route_number << endl;
+//				cout << "route 2 = " << route_number2 << endl;
 
 				std::vector<Customer> route1 = routes.at(route_number);
 				std::vector<Customer> route2 = routes.at(route_number2);
@@ -554,46 +554,46 @@ void CVRP::savingAlgorithm() {
 				int demandRoute2 = getRouteDemand(route2);
 				int capacidade = getC();
 				if (demandRoute1 + demandRoute2 <= capacidade) {
-					for (size_t r = 0; r < route1.size(); r++) {
-						Customer c = route1.at(r);
-						cout << "(" << c.getX() << ", " << c.getY() << ") -";
-					}
-					cout << endl;
+//					for (size_t r = 0; r < route1.size(); r++) {
+//						Customer c = route1.at(r);
+//						cout << "(" << c.getX() << ", " << c.getY() << ") -";
+//					}
+//					cout << endl;
 					//This operation is for: i(Customer1)->depot
 					//remote the depot
 					unsigned int depotIndex = route1.size() - 1;
 					route1.erase(route1.begin() + depotIndex);
-					cout << "After remove last i->depot." << endl;
-					for (size_t r = 0; r < route1.size(); r++) {
-						Customer c = route1.at(r);
-						cout << "(" << c.getX() << ", " << c.getY() << ") -";
-					}
-					cout << endl;
+//					cout << "After remove last i->depot." << endl;
+//					for (size_t r = 0; r < route1.size(); r++) {
+//						Customer c = route1.at(r);
+//						cout << "(" << c.getX() << ", " << c.getY() << ") -";
+//					}
+//					cout << endl;
 
-					for (size_t r = 0; r < route2.size(); r++) {
-						Customer c = route2.at(r);
-						cout << "(" << c.getX() << ", " << c.getY() << ") -";
-					}
-					cout << endl;
-					//This operation is for: depot->j(Customer2)
+//					for (size_t r = 0; r < route2.size(); r++) {
+//						Customer c = route2.at(r);
+//						cout << "(" << c.getX() << ", " << c.getY() << ") -";
+//					}
+//					cout << endl;
+//					This operation is for: depot->j(Customer2)
 					unsigned int depotIndex2 = 0;
 					route2.erase(route2.begin() + depotIndex2);
-					cout << "After remove last depot->j." << endl;
-					for (size_t r = 0; r < route2.size(); r++) {
-						Customer c = route2.at(r);
-						cout << "(" << c.getX() << ", " << c.getY() << ") -";
-					}
-					cout << endl;
+//					cout << "After remove last depot->j." << endl;
+//					for (size_t r = 0; r < route2.size(); r++) {
+//						Customer c = route2.at(r);
+//						cout << "(" << c.getX() << ", " << c.getY() << ") -";
+//					}
+//					cout << endl;
 
 					route1.insert(route1.end(), route2.begin(), route2.end());
-					cout << "Nueva ruta generada por las rutas " << route_number
-							<< " y " << route_number2 << endl;
-					for (size_t l = 0; l < route1.size(); l++) {
-						Customer customer = route1.at(l);
-						cout << "(" << customer.getX() << ", "
-								<< customer.getY() << ") - ";
-					}
-					//Take care when you remove a element from a vector. The update is automatically
+//					cout << "Nueva ruta generada por las rutas " << route_number
+//							<< " y " << route_number2 << endl;
+//					for (size_t l = 0; l < route1.size(); l++) {
+//						Customer customer = route1.at(l);
+//						cout << "(" << customer.getX() << ", "
+//								<< customer.getY() << ") - ";
+//					}
+//					Take care when you remove a element from a vector. The update is automatically
 					if (route_number < route_number2) {
 						routes.erase(routes.begin() + route_number);
 						routes.erase(routes.begin() + route_number2 - 1);
@@ -602,60 +602,60 @@ void CVRP::savingAlgorithm() {
 						routes.erase(routes.begin() + route_number2);
 					}
 
-					cout << "After remove the routes " << route_number
-							<< " and " << route_number2 << endl;
-					for (size_t i = 0; i < routes.size(); i++) {
-						std::vector<Customer> customers = routes.at(i);
-						cout << "route #" << i << endl;
-						for (size_t j = 0; j < customers.size(); j++) {
-							Customer c = customers.at(j);
-							cout << "(" << c.getX() << ", " << c.getY()
-									<< ") - ";
-						}
-						cout << "\n";
-					}
+//					cout << "After remove the routes " << route_number
+//							<< " and " << route_number2 << endl;
+//					for (size_t i = 0; i < routes.size(); i++) {
+//						std::vector<Customer> customers = routes.at(i);
+//						cout << "route #" << i << endl;
+//						for (size_t j = 0; j < customers.size(); j++) {
+//							Customer c = customers.at(j);
+//							cout << "(" << c.getX() << ", " << c.getY()
+//									<< ") - ";
+//						}
+//						cout << "\n";
+//					}
 
 					routes.push_back(route1);
-					cout << "--------------------------------" << endl;
-					cout << "after add the new  route: FINAL merge." << endl;
-					for (size_t i = 0; i < routes.size(); i++) {
-						std::vector<Customer> customers = routes.at(i);
-						cout << "route #" << i << endl;
-						for (size_t j = 0; j < customers.size(); j++) {
-							Customer c = customers.at(j);
-							cout << "(" << c.getX() << ", " << c.getY()
-									<< ") - ";
-						}
-						cout << "\n";
-					}
-					cout << "Number of routes after merge. = " << routes.size()
-							<< endl;
-					cout << "Customer i = (" << firstElement.getX() << ", "
-							<< firstElement.getY() << ")" << endl;
-					cout << "Customer j = (" << secondElement.getX() << ", "
-							<< secondElement.getY() << ")" << endl;
-
-					cout << "------------end--------------------" << endl;
+//					cout << "--------------------------------" << endl;
+//					cout << "after add the new  route: FINAL merge." << endl;
+//					for (size_t i = 0; i < routes.size(); i++) {
+//						std::vector<Customer> customers = routes.at(i);
+//						cout << "route #" << i << endl;
+//						for (size_t j = 0; j < customers.size(); j++) {
+//							Customer c = customers.at(j);
+//							cout << "(" << c.getX() << ", " << c.getY()
+//									<< ") - ";
+//						}
+//						cout << "\n";
+//					}
+//					cout << "Number of routes after merge. = " << routes.size()
+//							<< endl;
+//					cout << "Customer i = (" << firstElement.getX() << ", "
+//							<< firstElement.getY() << ")" << endl;
+//					cout << "Customer j = (" << secondElement.getX() << ", "
+//							<< secondElement.getY() << ")" << endl;
+//
+//					cout << "------------end--------------------" << endl;
 
 				}
 			}
-			cout << "=======end saving element from the list=========" << endl;
+//			cout << "=======end saving element from the list=========" << endl;
 		} else {
 			//Not to merge
 		}
 	}
 	setAllRoutesSaving(routes);
-	//Routes
-	cout << "Print routes after the first merge process:" << endl;
-	for (size_t i = 0; i < routes.size(); i++) {
-		std::vector<Customer> customers = routes.at(i);
-		cout << "route #" << i << endl;
-		for (size_t j = 0; j < customers.size(); j++) {
-			Customer c = customers.at(j);
-			cout << "(" << c.getX() << ", " << c.getY() << ") - ";
-		}
-		cout << "\n";
-	}
+//	Routes
+//	cout << "Print routes after the first merge process:" << endl;
+//	for (size_t i = 0; i < routes.size(); i++) {
+//		std::vector<Customer> customers = routes.at(i);
+//		cout << "route #" << i << endl;
+//		for (size_t j = 0; j < customers.size(); j++) {
+//			Customer c = customers.at(j);
+//			cout << "(" << c.getX() << ", " << c.getY() << ") - ";
+//		}
+//		cout << "\n";
+//	}
 
 }
 
@@ -682,24 +682,24 @@ std::vector<Customer> CVRP::expand(std::vector<Customer> allCustomers,
 	}
 
 	int k = 0;
-	cout << "---------------" << endl;
+//	cout << "---------------" << endl;
 	while (!pq.empty()) {
 		CustomerDD t = pq.top();
 		result.insert(result.begin() + k, t.c);
-		cout << "id = " << t.c.getId() << endl;
-		cout << "(" << t.c.getX() << ", " << t.c.getY() << ")" << endl;
-		cout << "distance = " << t.distance << endl;
-		cout << "demand = " << t.demand << endl;
-		cout << "--------------------" << endl;
+//		cout << "id = " << t.c.getId() << endl;
+//		cout << "(" << t.c.getX() << ", " << t.c.getY() << ")" << endl;
+//		cout << "distance = " << t.distance << endl;
+//		cout << "demand = " << t.demand << endl;
+//		cout << "--------------------" << endl;
 		pq.pop();
 		k++;
 	}
 
-	for (size_t k = 0; k < result.size(); k++) {
-		Customer c = result.at(k);
-		cout << "(" << c.getX() << ", " << c.getY() << ") demand = "
-				<< c.getDemand() << endl;
-	}
+//	for (size_t k = 0; k < result.size(); k++) {
+//		Customer c = result.at(k);
+//		cout << "(" << c.getX() << ", " << c.getY() << ") demand = "
+//				<< c.getDemand() << endl;
+//	}
 
 	return result;
 }
@@ -798,27 +798,27 @@ double CVRP::twoOptRoute(std::vector<std::vector<Customer> > routes) {
 		std::vector<Customer> newRoute;
 		std::vector<Customer> bestRoute = route;
 		double bestFO = routeFO;
-		/*
-		 cout << "--------route#" << i << "-----------------" << endl;
-		 for (size_t m = 0; m < bestRoute.size(); m++) {
-		 Customer c = bestRoute.at(m);
-		 cout << "(" << c.getX() << ", " << c.getY() << ")-> ";
-		 }
-		 cout << "\n";
-		 cout << cout << "-------------------------" << endl;
-		 */
+
+//		cout << "--------route#" << i << "-----------------" << endl;
+//		for (size_t m = 0; m < bestRoute.size(); m++) {
+//			Customer c = bestRoute.at(m);
+//			cout << "(" << c.getX() << ", " << c.getY() << ")-> ";
+//		}
+//		cout << "\n";
+//		cout << cout << "-------------------------" << endl;
+
 		for (unsigned int j = 0; j < bestRoute.size() - 1; j++) {
 			for (unsigned int k = 0; k < bestRoute.size() - 1; k++) {
 				newRoute = doTwoOpt(j, k, bestRoute);
-				/*
-				 cout << "----new-route-generated#-----------------" << endl;
-				 for (size_t m = 0; m < newRoute.size(); m++) {
-				 Customer c = newRoute.at(m);
-				 cout << "(" << c.getX() << ", " << c.getY() << ")-> ";
-				 }
-				 cout << "\n";
-				 cout << cout << "-------------------------" << endl;
-				 */
+
+//				cout << "----new-route-generated#-----------------" << endl;
+//				for (size_t m = 0; m < newRoute.size(); m++) {
+//					Customer c = newRoute.at(m);
+//					cout << "(" << c.getX() << ", " << c.getY() << ")-> ";
+//				}
+//				cout << "\n";
+//				cout << cout << "-------------------------" << endl;
+
 				double newFO = getFO(newRoute);
 				if (newFO < bestFO) {
 					bestFO = newFO;
@@ -827,7 +827,7 @@ double CVRP::twoOptRoute(std::vector<std::vector<Customer> > routes) {
 			}
 		}
 		sumAllFO = sumAllFO + bestFO;
-		//cout << "bestFO = " << bestFO << endl;
+//		cout << "bestFO = " << bestFO << endl;
 	}
 
 	return sumAllFO;
@@ -930,7 +930,7 @@ double CVRP::ILSBetweenRoutes(std::vector<std::vector<Customer> > routes) {
 std::vector<std::vector<Customer> > CVRP::perturbationInTheRoute(
 		std::vector<std::vector<Customer> > S, int n) {
 	std::vector<std::vector<Customer> > result;
-
+	srand(time(NULL));
 	int size = S.size();
 	int count = 0;
 
@@ -939,7 +939,6 @@ std::vector<std::vector<Customer> > CVRP::perturbationInTheRoute(
 			int r1 = 0;
 			int r2 = 0;
 			int sizeMax = S.at(i).size();
-			srand(time(NULL));
 			r1 = rand() % sizeMax;
 			r2 = rand() % sizeMax;
 
@@ -1071,39 +1070,44 @@ double CVRP::exchangingBetweenRoutes(
 	std::vector<Customer> bestRoute;
 	std::vector<Customer> bestPivot;
 	for (unsigned int i = 0; i < routes.size(); i++) {
-		//std::vector<std::vector<Customer> > AllRoutes = routes;
+//		std::vector<std::vector<Customer> > AllRoutes = routes;
 		std::vector<Customer> route = routes.at(i);
 		for (unsigned int j = 0; j < routes.size(); j++) {
 			std::vector<Customer> pivot = routes.at(j);
 			if (i != j) {
-				//Remove from the routes the routes that are being changed.
-				/*if (i < j) {
-				 AllRoutes.erase(AllRoutes.begin() + i);
-				 AllRoutes.erase(AllRoutes.begin() + (j - 1));
-				 } else {
-				 AllRoutes.erase(AllRoutes.begin() + i);
-				 AllRoutes.erase(AllRoutes.begin() + j);
-				 }*/
+//				Remove from the routes the routes that are being changed.
+//				if (i < j) {
+//					AllRoutes.erase(AllRoutes.begin() + i);
+//					AllRoutes.erase(AllRoutes.begin() + (j - 1));
+//				} else {
+//					AllRoutes.erase(AllRoutes.begin() + i);
+//					AllRoutes.erase(AllRoutes.begin() + j);
+//				}
+//
+//				printRoute(route);
+//				printRoute(pivot);
 
-				//printRoute(route);
-				//printRoute(pivot);
 				result = doExchangingtRoutes(route, pivot);
-				//printRoute(result.at(0));
-				//printRoute(result.at(1));
+//				printRoute(result.at(0));
+//				printRoute(result.at(1));
 				route = result.at(0);
 				pivot = result.at(1);
 				routes.at(i) = result.at(0);
 				routes.at(j) = result.at(1);
 
-				//cout << "---Print after doTwoOptRoutes---" << endl;
-				//printRoutes(result);
-				//cout << "---end Print after doTwoOptRoutes---" << endl;
-				//Insert the routes that were removed, but now they are modified
-				/*AllRoutes.insert(AllRoutes.begin() + AllRoutes.size(),
-				 result.at(0));
-				 AllRoutes.insert(AllRoutes.begin() + AllRoutes.size(),
-				 result.at(1));
-				 */
+//				cout << "---Print after doTwoOptRoutes---" << endl;
+//				printRoutes(result);
+//				cout << "---end Print after doTwoOptRoutes---" << endl;
+//				Insert the
+//				routes that
+//				were removed, but
+//				now they
+//				are modified
+//				AllRoutes.insert(AllRoutes.begin() + AllRoutes.size(),
+//						result.at(0));
+//				AllRoutes.insert(AllRoutes.begin() + AllRoutes.size(),
+//						result.at(1));
+
 				double newSumRoutes = getFO(routes);
 				if (newSumRoutes < bestSumRoutes) {
 					bestSumRoutes = newSumRoutes;
@@ -1283,7 +1287,7 @@ void CVRP::init(VRP V) {
 		x_cvpr[i] = new bool[nro_customers];
 		s_cvpr[i] = new double[nro_customers];
 	}
-	cout << "Save the distance in a d array of array" << endl;
+//	cout << "Save the distance in a d array of array" << endl;
 	for (int i = 0; i < nro_customers; i++) {
 		Customer customer = allCustomers.at(i);
 		cout << "(" << customer.getX() << ", " << customer.getY() << ")"
@@ -1491,26 +1495,26 @@ void CVRP::init(VRP V) {
 			if (depot2IsFound && c2IsFound) {
 				secondCondition = true;
 			} else {
-				cout << "Not2" << endl;
+//				cout << "Not2" << endl;
 			}
 
 		}
 		if (firstCondition && secondCondition) {
 			if (route_number != route_number2) {
-				cout << "route 1 = " << route_number << endl;
-				cout << "route 2 = " << route_number2 << endl;
-				cout << "first Element = (" << firstElement.getX() << ", "
-						<< firstElement.getY() << ")" << endl;
-				cout << "second Element = (" << secondElement.getX() << ", "
-						<< secondElement.getY() << ")" << endl;
-				cout << "soy sensacional" << endl;
+//				cout << "route 1 = " << route_number << endl;
+//				cout << "route 2 = " << route_number2 << endl;
+//				cout << "first Element = (" << firstElement.getX() << ", "
+//						<< firstElement.getY() << ")" << endl;
+//				cout << "second Element = (" << secondElement.getX() << ", "
+//						<< secondElement.getY() << ")" << endl;
+
 				std::vector<Customer> route1 = routes.at(route_number);
-				for (size_t r = 0; r < route1.size(); r++) {
-					Customer c = route1.at(r);
-					cout << "(" << c.getX() << ", " << c.getY() << ") -";
-				}
-				cout << endl;
-				//remote the depot
+//				for (size_t r = 0; r < route1.size(); r++) {
+//					Customer c = route1.at(r);
+//					cout << "(" << c.getX() << ", " << c.getY() << ") -";
+//				}
+//				cout << endl;
+//				remote the depot
 				for (size_t r = 0; r < route1.size(); r++) {
 					Customer customer = route1.at(r);
 					if (compareCustomers(customer, getDepot())) {
@@ -1518,11 +1522,11 @@ void CVRP::init(VRP V) {
 					}
 				}
 				std::vector<Customer> route2 = routes.at(route_number2);
-				for (size_t r = 0; r < route2.size(); r++) {
-					Customer c = route2.at(r);
-					cout << "(" << c.getX() << ", " << c.getY() << ") -";
-				}
-				cout << endl;
+//				for (size_t r = 0; r < route2.size(); r++) {
+//					Customer c = route2.at(r);
+//					cout << "(" << c.getX() << ", " << c.getY() << ") -";
+//				}
+//				cout << endl;
 				for (size_t r = 0; r < route2.size(); r++) {
 					Customer customer = route2.at(r);
 					if (compareCustomers(customer, getDepot())) {
@@ -1530,43 +1534,43 @@ void CVRP::init(VRP V) {
 					}
 				}
 				route1.insert(route1.end(), route2.begin(), route2.end());
-				cout << "Nueva ruta generada por las rutas " << route_number
-						<< " y " << route_number2 << endl;
-				for (size_t l = 0; l < route1.size(); l++) {
-					Customer customer = route1.at(l);
-					cout << "(" << customer.getX() << ", " << customer.getY()
-							<< ") - ";
-				}
+//				cout << "Nueva ruta generada por las rutas " << route_number
+//						<< " y " << route_number2 << endl;
+//				for (size_t l = 0; l < route1.size(); l++) {
+//					Customer customer = route1.at(l);
+//					cout << "(" << customer.getX() << ", " << customer.getY()
+//							<< ") - ";
+//				}
 				routes.erase(routes.begin() + route_number);
 				routes.erase(routes.begin() + route_number2 - 1);
 
-				cout << "After remove the routes " << route_number << " and "
-						<< route_number2 << endl;
-				for (size_t i = 0; i < routes.size(); i++) {
-					std::vector<Customer> customers = routes.at(i);
-					cout << "route #" << i << endl;
-					for (size_t j = 0; j < customers.size(); j++) {
-						Customer c = customers.at(j);
-						cout << "(" << c.getX() << ", " << c.getY() << ") - ";
-					}
-					cout << "\n";
-				}
+//				cout << "After remove the routes " << route_number << " and "
+//						<< route_number2 << endl;
+//				for (size_t i = 0; i < routes.size(); i++) {
+//					std::vector<Customer> customers = routes.at(i);
+//					cout << "route #" << i << endl;
+//					for (size_t j = 0; j < customers.size(); j++) {
+//						Customer c = customers.at(j);
+//						cout << "(" << c.getX() << ", " << c.getY() << ") - ";
+//					}
+//					cout << "\n";
+//				}
 
 				routes.push_back(route1);
-				cout << "after add the new  route merged." << endl;
-				for (size_t i = 0; i < routes.size(); i++) {
-					std::vector<Customer> customers = routes.at(i);
-					cout << "route #" << i << endl;
-					for (size_t j = 0; j < customers.size(); j++) {
-						Customer c = customers.at(j);
-						cout << "(" << c.getX() << ", " << c.getY() << ") - ";
-					}
-					cout << "\n";
-				}
-				cout << "routes.size() = " << routes.size() << endl;
+//				cout << "after add the new  route merged." << endl;
+//				for (size_t i = 0; i < routes.size(); i++) {
+//					std::vector<Customer> customers = routes.at(i);
+//					cout << "route #" << i << endl;
+//					for (size_t j = 0; j < customers.size(); j++) {
+//						Customer c = customers.at(j);
+//						cout << "(" << c.getX() << ", " << c.getY() << ") - ";
+//					}
+//					cout << "\n";
+//				}
+//				cout << "routes.size() = " << routes.size() << endl;
 
 			}
-			cout << "=======end saving element from the list=========" << endl;
+//			cout << "=======end saving element from the list=========" << endl;
 		} else {
 			//Not to merge
 		}
